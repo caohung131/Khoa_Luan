@@ -4,6 +4,10 @@ const getProductById = (productId) => {
   return createApiPjc().get(`/product/${productId}`);
 };
 
+const getOrderById = (orderId) => {
+  return createApiPjc().get(`/order/${orderId}`);
+};
+
 const getUserById = (userId) => {
   return createApiPjc().get(`/user/${userId}`);
 };
@@ -47,4 +51,5 @@ export {
   getUserById,
   createUser,
   getVariantById,
+  getOrderById
 };

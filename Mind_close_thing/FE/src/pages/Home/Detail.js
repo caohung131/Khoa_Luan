@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DetailsInfo from "../components/detailProducts/DetailsInfo";
+import DetailsInfo from "../components/detailProducts/Detail_Cart_Info";
 import SlideImg from "../components/detailProducts/SlideImg";
 import Decribe from "../components/detailProducts/Decribe";
 import "./Detail.css";
@@ -12,7 +12,7 @@ import Footer from "./Footer";
 const Detail = () => {
   const [productById, setProductById] = useState();
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
 
   useEffect(() => {
     axios

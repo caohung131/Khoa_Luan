@@ -24,7 +24,7 @@ const orderModel = mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      required: true,
+      // required: true,
       defautlt: "1",
     },
     totalPrice: { type: Number, default: 0 },
@@ -33,7 +33,8 @@ const orderModel = mongoose.Schema(
     status: {
       type: String,
       enum: ["0", "1", "2"],
-      required: true,
+      default: "1"
+      // required: true,
     },
   },
   { timestamps: true }

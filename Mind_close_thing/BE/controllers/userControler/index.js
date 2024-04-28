@@ -7,7 +7,7 @@ const {
   generateRefreshToken,
 } = require("../../middlewares/authenticator.js");
 const userModel = require("../../models/User.js");
-const { error } = require("../order/validation.js");
+const { error, message } = require("../order/validation.js");
 const User = require("../../models/User.js");
 const nodemailer = require("nodemailer");
 const { OAuth2Client } = require("google-auth-library");
@@ -362,91 +362,113 @@ async function calculateTotalPrice(cartDetail) {
 }
 
 const updateCart = async (req, res) => {
-  const userId = req.user._id?.toString();
-  const { variant, quantity, action } = req.body;
 
-  if (!variant) {
-    return res.status(200).json({ status: "error", message: "Missing inputs" });
-  }
+  try {
 
-  const variantEle = await variantModel.findById(variant);
+    const userId = req.user._id?.toString();
+    const { variant, quantity, action } = req.body;
 
 
-  // Check sản phẩm order có nhiều hơn sản phẩm trong kho hay không?
-  if (variantEle.countInStock >= quantity) {
-    const user = req.user;
-
-    // Check xem mặt hàng đã có trong giỏ hàng chưa?
-    const alreadyVariant = user?.cart?.cartDetail?.find(
-      (ele) => {
-        return ele.variant.toString() === variant && ele?.color?.toString() === variantEle?.color && ele?.size?.toString() === variantEle?.size
-      }
-    );
-
-    if (alreadyVariant) {
-      // Nếu đã có mặt hàng này trong giỏ hàng
-      let update = { $inc: { "cart.cartDetail.$.quantity": quantity } };
-
-      if (action === 'changeQuantity') {
-        update = { $set: { "cart.cartDetail.$.quantity": quantity } }
-      }
-
-      const response = await userModel.findOneAndUpdate(
-        { _id: userId, "cart.cartDetail.variant": variant, "cart.cartDetail.color": variantEle?.color, "cart.cartDetail.size": variantEle?.size },
-        update,
-        { new: true }
-      );
-
-      const totalPrice = await calculateTotalPrice(response.cart.cartDetail);
-      response.cart.totalPrice = totalPrice;
-      await response.save();
-
-      return res.status(200).json({
-        success: response ? true : false,
-        mes: response ? response : "something went wrong ",
-        totalPrice: totalPrice,
-      });
-    } else {
-      // Nếu chưa có mặt hàng này trong giỏ hàng
-      const productId = variantEle?.productId?.toString();
-
-
-      const cartDetail = { variant, quantity, productId, color: variantEle?.color, size: variantEle?.size, image: variantEle?.image, name: variantEle?.name, priceDetail: { ...variantEle.priceDetail } }
-
-      const response = await User.findByIdAndUpdate(
-        userId,
-        {
-          $push: {
-            "cart.cartDetail": cartDetail
-          }
-        },
-        { new: true, upsert: true }
-      );
-
-      const totalPrice = await calculateTotalPrice(response.cart.cartDetail);
-      response.cart.totalPrice = totalPrice;
-      await response.save();
-
-      return res.status(200).json({
-        success: response ? true : false,
-        mes: response ? response : "something went wrong ",
-      });
+    if (!variant) {
+      return res.status(200).json({ status: "error", message: "Missing inputs" });
     }
-  } else {
-    return res
-      .status(400)
-      .json({ message: "Không thể thêm quá số lượng sản phẩm có sẵn" });
+
+    const variantEle = await variantModel.findById(variant);
+
+    // console.log(variantEle)
+
+    // return 0;
+
+    //TH đã có mặt hàng này trong giỏ rồi
+
+    // Check sản phẩm order có nhiều hơn sản phẩm trong kho hay không?
+    if (variantEle.countInStock >= quantity) {
+      const user = req.user;
+
+      // Check xem mặt hàng đã có trong giỏ hàng chưa?
+      const alreadyVariant = user?.cart?.cartDetail?.find(
+        (ele) => {
+          return ele.variant.toString() === variant && ele?.color?.toString() === variantEle?.color && ele?.size?.toString() === variantEle?.size
+        }
+      );
+
+      if (alreadyVariant) {
+        // Nếu đã có mặt hàng này trong giỏ hàng
+        let update = { $inc: { "cart.cartDetail.$.quantity": quantity } }; // khởi tạo biến $inc
+
+        if (action === 'changeQuantity') { // nếu bằng change quantity thì gán lại biến $set  
+          update = { $set: { "cart.cartDetail.$.quantity": quantity } }
+        }
+
+        // cập nhật giỏ hàng với các biến $inc hoặc $set
+        const response = await userModel.findOneAndUpdate(
+          { _id: userId, "cart.cartDetail.variant": variant, "cart.cartDetail.color": variantEle?.color, "cart.cartDetail.size": variantEle?.size },
+          update,
+          { new: true }
+        );
+
+        //tính tổng tiền gán lại
+        const totalPrice = await calculateTotalPrice(response.cart.cartDetail);
+        response.cart.totalPrice = totalPrice;
+        await response.save(); // save lại từ tính tổng tiền
+
+        return res.status(200).json({
+          success: response ? true : false,
+          mes: response ? response : "something went wrong ",
+          totalPrice: totalPrice,
+        });
+      } else {
+        // Nếu chưa có mặt hàng này trong giỏ hàng
+        const productId = variantEle?.productId?.toString(); //chuyển productId về chuỗi
+
+
+        //gán mọi thứ vào cardDetail
+        const cartDetail = { variant, quantity, productId, color: variantEle?.color, size: variantEle?.size, image: variantEle?.image, name: variantEle?.name, priceDetail: { ...variantEle.priceDetail } }
+
+        //dùng hàm push để cập nhật cardDetailS
+        const response = await User.findByIdAndUpdate(
+          userId,
+          {
+            $push: {
+              "cart.cartDetail": cartDetail
+            }
+          },
+          { new: true, upsert: true }
+        );
+
+        //tính giá cập nhật lại
+        const totalPrice = await calculateTotalPrice(response.cart.cartDetail);
+        response.cart.totalPrice = totalPrice;
+        await response.save();
+
+        return res.status(200).json({
+          success: response ? true : false,
+          mes: response ? response : "something went wrong ",
+        });
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Không thể thêm quá số lượng sản phẩm có sẵn" });
+    }
+  } catch (error) {
+    return res.send(error.message);
   }
 };
 
 const removeVariantInCart = async (req, res) => {
-  const userId = req.user._id?.toString();
-  const variant = req.params.id;
-  if (!variant) {
-    res.status(200).json({ mes: "Missing variant ID" });
-  }
+
   try {
-    const user = req.user;
+
+    const userId = req.user._id?.toString();
+    const variant = req.params.id;  // tìm id của variant truyền qua param
+    if (!variant) {
+      res.status(200).json({ mes: "Missing variant ID" });
+    }
+
+    const user = req.user; // lấy user từ authen trc
+
+    //Kiểm tra có variant trong cart không
     const alreadyVariant = user?.cart?.cartDetail?.find(
       (ele) => ele.variant.toString() === variant
     );
@@ -458,6 +480,7 @@ const removeVariantInCart = async (req, res) => {
       });
     }
 
+    // dùng toán tử pull để xóa 1 variant trong cart ở vị trí chỉ định
     const response = await userModel.findByIdAndUpdate(
       userId,
       { $pull: { "cart.cartDetail": { variant: variant, } } },

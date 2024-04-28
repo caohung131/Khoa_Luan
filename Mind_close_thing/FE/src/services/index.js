@@ -42,6 +42,7 @@ const addInterceptorResponse = (instance) => {
   );
 };
 
+//api gán access token vào Api
 const addInterceptorRequest = (instance) => {
   instance.interceptors.request.use(
     async (config) => {
@@ -57,7 +58,9 @@ const addInterceptorRequest = (instance) => {
   );
 };
 
+
 export const createApiPjc = () => {
+  // gán ip máy
   const instance = axios.create(defaultConfig);
   addInterceptorRequest(instance);
   addInterceptorResponse(instance);

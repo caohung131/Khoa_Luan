@@ -24,7 +24,7 @@ userRouter.post("/login", login);
 userRouter.post("/register", register);
 userRouter.get("/get-current", authentication, getCurrent);
 userRouter.post("/register-admin", authentication, authorization, register); // chỉ khi đăng nhập mới sửa dc rule
-userRouter.put("/cart", authentication, updateCart);
+userRouter.put("/cart", authentication, updateCart);   // đang lỗi
 userRouter.delete("/remove-cart/:id", authentication, removeVariantInCart);
 userRouter.put("/:id", authentication, updateUser);
 userRouter.delete("/:id", authentication, authorization, deleteUser);

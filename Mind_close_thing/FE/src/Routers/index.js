@@ -19,12 +19,12 @@ const Routers = () => {
 
     const isAuthenticated =
     !!localStorage.getItem("user") || !!localStorage.getItem("user/admin");
-    console.log(isAuthenticated);
+    // console.log(isAuthenticated);
 
 
     // setIsAuth(isAuthenticated);
 
-    console.log(isAuth);
+    // console.log(isAuth);
 
   return (
     <>

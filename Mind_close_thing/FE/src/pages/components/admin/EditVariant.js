@@ -10,7 +10,7 @@ const EditVariant = (id) => {
   const [form] = Form.useForm();
   const toast = useToast();
 
-  console.log(id.id);
+  // console.log(id.id);
   const showModal = () => {
     setOpen(true);
   };

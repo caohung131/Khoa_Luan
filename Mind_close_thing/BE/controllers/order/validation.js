@@ -12,8 +12,7 @@ const orderSchema = Joi.object({
     district: Joi.string(),
     city: Joi.string(),
   }),
-  paymentMethod: Joi.string(),
   status: Joi.string(),
-});
+}).unknown();
 
 module.exports = orderSchema;

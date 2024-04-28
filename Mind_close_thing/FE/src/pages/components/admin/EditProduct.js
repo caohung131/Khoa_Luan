@@ -9,6 +9,7 @@ const EditProduct = (id) => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
   const toast = useToast();
+  const [product, setProduct] = useState();
 
   const showModal = () => {
     setOpen(true);
@@ -27,7 +28,11 @@ const EditProduct = (id) => {
 
   const getProduct = async () => {
     try {
-      const product = await getProductById(id.id);
+      const product = await createApiPjc().get(
+        `http://localhost:8000/product/${id.id}`);
+      console.log(product.data)
+
+      setProduct(product);
       form.setFieldValue("name", product.data.product.name);
       form.setFieldValue("slug", product.data.product.slug);
       form.setFieldValue("category", product.data.product.category);
@@ -44,6 +49,7 @@ const EditProduct = (id) => {
       console.log(error);
     }
   };
+
 
   const onFinish = async (values) => {
     console.log(values);
@@ -85,6 +91,7 @@ const EditProduct = (id) => {
 
   return (
     <>
+
       <Button type="danger" onClick={showModal}>
         Edit
       </Button>

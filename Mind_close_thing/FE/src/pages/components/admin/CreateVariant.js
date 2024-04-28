@@ -1,7 +1,8 @@
 import { useToast } from "@chakra-ui/react";
 import { Button, Form, Input, InputNumber, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createApiPjc } from "../../../services";
+import  "./cssAdmin.css"
 
 const CreateVariant = (id) => {
   const [open, setOpen] = useState(false);
@@ -14,10 +15,13 @@ const CreateVariant = (id) => {
   };
   const handleOk = () => {
     setConfirmLoading(true);
+    setOpen(false);
+
+  
     setTimeout(() => {
       setOpen(false);
       setConfirmLoading(false);
-    }, 2000);
+    }, 4000);
   };
   const handleCancel = () => {
     console.log("Clicked cancel button");
@@ -40,11 +44,16 @@ const CreateVariant = (id) => {
           countInStock: values.countInStock,
         }
       );
+
+      alert('Tạo variant thành công')
+
       toast({
         status: "success",
         title: "Tạo sản phẩm thành công",
         position: "top",
       });
+
+
     } catch (error) {
       console.log(error);
       toast({
@@ -54,6 +63,10 @@ const CreateVariant = (id) => {
       });
     }
   };
+
+  // useEffect( () => {
+
+  // },[])
   return (
     <>
       <Button type="dashed" onClick={showModal} color="black">
@@ -101,33 +114,33 @@ const CreateVariant = (id) => {
           onFinish={onFinish}
         >
           <Form.Item label="Name" name="name" rules={[{ required: true }]}>
-            <Input />
+            <Input className="input"/>
           </Form.Item>
           <Form.Item label="Image" name="image" rules={[{ required: true }]}>
-            <Input />
+            <Input className="input" />
           </Form.Item>
           <Form.Item label="Price" name="price" rules={[{ required: true }]}>
-            <InputNumber />
+            <InputNumber className="input" />
           </Form.Item>
           <Form.Item
             label="Sale Ratio"
             name="saleRatio"
             rules={[{ required: true }]}
           >
-            <InputNumber />
+            <InputNumber className="input"/>
           </Form.Item>
           <Form.Item label="Color" name="color" rules={[{ required: true }]}>
-            <Input />
+            <Input className="input"/>
           </Form.Item>
           <Form.Item label="Size" name="size" rules={[{ required: true }]}>
-            <Input />
+            <Input className="input"/>
           </Form.Item>
           <Form.Item
             label="Count In Stock"
             name="countInStock"
             rules={[{ required: true }]}
           >
-            <InputNumber />
+            <InputNumber className="input" />
           </Form.Item>
         </Form>
       </Modal>

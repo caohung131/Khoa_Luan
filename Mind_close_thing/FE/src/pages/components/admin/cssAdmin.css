@@ -1,0 +1,26 @@
+.input {
+    width: 100%;
+}
+
+.bg-red {
+    background-color: red !important;
+}
+
+.bg-green {
+    background-color: green !important;;
+}
+
+.bg-orange {
+    background-color: orange !important;
+}
+
+.color-white {
+    color: white !important;
+}
+
+.bg-blue {
+    background-color: #1677ff !important;
+     
+
+     /* background-color: blue; */
+}

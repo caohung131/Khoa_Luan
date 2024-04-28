@@ -1,8 +1,11 @@
 import { useToast } from "@chakra-ui/react";
 import { Button, Form, Input, Popconfirm, Select, Space, Table } from "antd";
+// import { Button, Form, Input, Modal, Select } from "antd";
+import './cssAdmin.css'
 import React, { useEffect, useState } from "react";
 import { createApiPjc } from "../../../services";
-import {} from "../../services";
+import EditOrder from "./EditOrder.jsx";
+
 const { Option } = Select;
 
 const OrderAdmin = () => {
@@ -30,7 +33,7 @@ const OrderAdmin = () => {
 
   useEffect(() => {
     createApiPjc()
-      .get(`http://localhost:8000/admin${selectedCategory}${number}`)
+      .get(`http://localhost:8000/admin/${selectedCategory}${number}`)
       .then((response) => {
         if (selectedCategory === "/order-day?day=") {
           setOrders(response.data.orderToday);
@@ -101,9 +104,10 @@ const OrderAdmin = () => {
         title: "Action",
         dataIndex: "operation",
         key: "operation",
-        render: () => (
+        render: (_, record) => (
           <Space size="middle">
             <a>Edit</a>
+            {console.log(record)}
             <a>Delete</a>
           </Space>
         ),
@@ -141,22 +145,46 @@ const OrderAdmin = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      onchange: (value) => {
+        console.log(value.target.value);
+      },
+      render: (record) => {
+        // console.log(record)
+        if(record === "0") {
+          return <Button className="bg-red color-white ">Đã hủy</Button>
+        } else if(record === "1") {
+          return <Button className="bg-orange color-white">Đang chờ duyệt</Button>
+        } else if (record == "2") {
+            return <Button className="bg-green color-white">Đã xác nhận</Button>
+         }
+
+         
+      }
     },
     {
       title: "Action",
       key: "action",
+   
+
       render: (_, record) => (
-        <Space size="middle">
-          <div></div>
-          <Popconfirm
-            title="Delete order"
-            description="Are you sure to delete this order?"
-            onConfirm={() => {}}
+        <Space size="middle" className= "bg-blue color-white" >
+          <EditOrder id={record._id}  className= "bg-blue color-white" />
+          {/* {console.log(record)} */}
+          {/* <EditProduct id={record._id} /> */}
+          {/* <Popconfirm
+            style={{ color: "red" }}
+            title="Delete product"
+            description="Are you sure to delete this product?"
+            onConfirm={() => {
+              handleDeleteOrder(record._id);
+            }}
           >
             <a style={{ color: "red" }}>Delete</a>
-          </Popconfirm>
+          </Popconfirm> */}
         </Space>
       ),
+
+
     },
   ];
 
@@ -166,7 +194,7 @@ const OrderAdmin = () => {
     setNumber(values.timeSet.number);
   };
 
-  console.log(orders);
+  // console.log(orders);
 
   return (
     <>

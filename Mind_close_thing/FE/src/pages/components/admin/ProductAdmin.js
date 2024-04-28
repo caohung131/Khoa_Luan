@@ -17,15 +17,18 @@ const ManageProduct = () => {
   const [count, setCount] = useState(0);
   const toast = useToast();
   const [variantId, setVariantId] = useState();
+  const [dataVariants, setDataVariants] = useState();
 
-  // const transformData = (data) => {
-  //   return data.map((item) => {
-  //     return {
-  //       ...item,
-  //       key: item._id,
-  //     };
-  //   });
-  // };
+
+  const transformData = (data) => {
+    return data.map((item) => {
+      return {
+        ...item,
+        key: item._id,
+      };
+    });
+  };
+
 
   
   useEffect(() => {
@@ -34,7 +37,8 @@ const ManageProduct = () => {
       .then((response) => {
         console.log(response.data.products)
 
-        setProducts(response.data.products); // call api trả về data là mảng product
+        setProducts(response.data.products); // call api trả về data là mảng 
+        
       })
       .catch((error) => {
         console.error("Lỗi khi lấy danh sách sản phẩm:", error);
@@ -234,12 +238,13 @@ const ManageProduct = () => {
           </Space>
         ),
       },
+
     ];
     return (
       <Table
         columns={columns}
         dataSource={record.variants}
-        pagination={false}
+        pagination={true}
         record={record}
       />
     );
@@ -251,14 +256,17 @@ const ManageProduct = () => {
       <CreateProduct />
       <Table
         columns={columns}
-        dataSource={products} // nơi đổ product từ antd 
-        pagination={false}
-        expandable={{ expandedRowRender, defaultExpandedRowKeys: [] }}
+        dataSource={transformData(products) } // nơi đổ product từ antd, do nó chưa có id chuẩn nên chưa nhận chuẩn cần set lại id
+        pagination={true}
+        // expandable={{ expandedRowRender, defaultExpandedRowKeys: [] }}
+          expandable={{ expandedRowRender }}
+
         style={{ marginTop: "10px" }}
       />
       <Pagination
         current={pageIndex}
         pageSize={pageSize}
+
         total={count}
         style={{ marginTop: "10px" }}
         onChange={(page, pageSize) => {

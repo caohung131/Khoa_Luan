@@ -6,7 +6,7 @@ import {UserProvider } from "../../../UserContext"
 
 const {user} = UserProvider;
  
-console.log(user)
+// console.log(user)
 
 
 const handleClick = () => {

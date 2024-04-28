@@ -8,6 +8,7 @@ import { useUser } from "../../UserContext";
 import emptyCartSvg from "../../assets/images/cart_empty.svg";
 import axios, { AxiosError } from "axios";
 import CartDropdown from "./CartDropdown";
+import { createApiPjc } from "../../services";
 
 export default function Cart() {
   const { user, updateUser } = useUser();
@@ -16,6 +17,34 @@ export default function Cart() {
 
   const cartDetails = user?.cart?.cartDetail || [];
   const totalPrice = user?.cart?.totalPrice || 0;
+
+  // console.log(user)
+  // console.log(cartDetails)
+
+  const transformData = (data) => {
+    return data.map((item) => {
+      return {
+        ...item,
+        key: item._id,
+      };
+    });
+  };
+
+  const handlePay = async () => {
+    // console.log(cartDetails)
+    
+    const result = await createApiPjc().post(
+      `http://localhost:8000/order/${user._id}`,
+      {
+        // orderedBy: user._id,
+        orderDetail: transformData(cartDetails),
+        shippingAddress: user.shippingAddress 
+      }
+      
+    )
+    console.log(result)
+    // alert('a')
+  };
 
   const changeQuantity = async (variantId, quantity) => {
     try {
@@ -127,12 +156,12 @@ export default function Cart() {
                   <tbody>
                     {cartDetails.map(cartItem => {
                       const priceAProduct =
-                        cartItem.priceDetail.price * ((100 - cartItem.priceDetail.saleRatio) / 100);
+                        cartItem?.priceDetail?.price * ((100 - cartItem?.priceDetail?.saleRatio) / 100);
 
                       return (
                         <tr
                           className="bg-white border border-[#ebebeb] hover:bg-gray-50"
-                          key={cartItem.variant}
+                          key={cartItem?.variant}
                         >
                           <th scope="row" className="pl-[10px] py-2">
                             <div className="d-flex flex-row gap-3">
@@ -207,8 +236,8 @@ export default function Cart() {
                     {formatCurrencyInVnd(totalPrice)}đ
                   </p>
                 </div>
-                <div className="lg:flex lg:justify-end">
-                  <Button
+                <div className="lg:flex lg:justify-end" >
+                  <Button onClick={handlePay}
                     type="primary"
                     className="bg-black w-full lg:w-[300px] mt-3 !rounded-none"
                     size="large"

@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 import { useUser } from "../../../UserContext";
 import { createApiPjc } from "../../../services";
-import "./DetailsInfo.css";
+import "./Detail_Cart_Info.css";
 
 const DetailsInfo = (data) => {
   const [color, setColor] = useState("");
@@ -20,10 +20,18 @@ const DetailsInfo = (data) => {
     if (color && size) {
       const variant = data.productById.variants.find(
         (variant) => variant.color === color && variant.size === size
+        
       );
       setSelectedVariant(variant);
     }
+
+  console.log(selectedVariant)
+
   }, [color, size, data.productById.variants]);
+
+  // console.log("data " + data.productById.variants)
+
+
 
   const { updateUser } = useUser();
 
@@ -35,7 +43,17 @@ const DetailsInfo = (data) => {
     const accessToken = JSON.parse(localStorage.getItem("user")).accessToken;
     const addToCart = async () => {
       try {
-        const response = await createApiPjc().put(
+
+        // console.log(selectedVariant.variants)
+
+        // return 0
+        // // cần xử lý thêm giỏ hàng giới hạn hàng r thì k thêm dc nữa
+        // if(selectedVariant.quantity >= selectedVariant.variants.countInStock) {
+        //   message.success("Số lượng giỏ hàng đã đạt giới hạn trong kho, không thể thêm")
+        //   throw new Error("Số lượng giỏ hàng đã đạt giới hạn trong kho, không thể thêm")
+        // }
+        
+        let response = await createApiPjc().put( //
           "http://localhost:8000/user/cart",
           {
             variant: selectedVariant._id,
@@ -51,12 +69,14 @@ const DetailsInfo = (data) => {
         if (response.data.success) {
           // Xử lý sau khi thêm vào giỏ hàng thành công (nếu cần)
           message.success("Thêm vào giỏ hàng thành công")
+          
         } else {
           throw new Error(response?.message || "Thêm vào giỏ hàng không thành công")
         }
+        console.log(response);
       } catch (error) {
         if (error instanceof AxiosError) {
-          message.error(error.response.data?.message)
+          message.error(error.response?.data?.message)
         } else {
           message.error(error?.message)
         }
@@ -64,7 +84,7 @@ const DetailsInfo = (data) => {
       updateUser();
     };
     if (selectedVariant) {
-      console.log({ variant: selectedVariant._id, quantity: quantity });
+      // console.log({ variant: selectedVariant._id, quantity: quantity });
       addToCart();
     } else {
       message.error("Chưa chọn color, size");
@@ -105,10 +125,14 @@ const DetailsInfo = (data) => {
     return false;
   });
 
-  // useEffect(() => { }, []);
+  useEffect(() => { 
+    if( quantity > selectedVariant?.countInStock ) { // nếu số lượng thêm lớn hơn thực trạng trong kho, tự gán nó bằng thằng to nhất trong kho
+      setQuantity( selectedVariant.countInStock)
+    }
+  }, [quantity]);
 
   const inQuantity = () => {
-    if (quantity < 999) {
+    if (selectedVariant?.countInStock ? quantity < selectedVariant?.countInStock : 999) {
       setQuantity(quantity + 1);
     }
   };
@@ -161,7 +185,13 @@ const DetailsInfo = (data) => {
           </button>
         ))}
       </div>
+      <div className="displayFlex">
+      Số lượng còn:  
+      <p>{selectedVariant?.countInStock ? selectedVariant?.countInStock : "0"}</p>
+      </div>
       <p style={{ color: "#0158DA" }}>+ Hướng dẫn chọn size</p>
+
+     
       <div className="quantity">
         <p>Số lượng</p>
         <button className="minus-quantity" onClick={deQuantity}>

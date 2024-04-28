@@ -22,7 +22,7 @@ const SlideImg = (data) => {
     return false;
   });
 
-  console.log(filteredVariants);
+  // console.log(filteredVariants);
 
   return (
     <div className="container xl:w-[700px]">
