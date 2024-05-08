@@ -1,14 +1,17 @@
 import { useToast } from "@chakra-ui/react";
 import { Button, Form, Input, InputNumber, Modal } from "antd";
 import React, { useEffect, useState } from "react";
-import { createApiPjc } from "../../../services";
 import { getVariantById } from "../../services";
+import "./cssAdmin.css"
+import { createApiPjc } from "../../../services";
 
 const EditVariant = (id) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
   const toast = useToast();
+
+
 
   // console.log(id.id);
   const showModal = () => {
@@ -28,7 +31,14 @@ const EditVariant = (id) => {
 
   const getVariant = async () => {
     try {
-      const variant = await getVariantById(id.id);
+      // const variant = await getVariantById(id.id);
+
+      const variant = await createApiPjc().
+        get(`http://localhost:8000/variant/${id.id}`)
+
+      console.log(variant);
+
+      console.log(variant);
       form.setFieldValue("name", variant.data.variant.name);
       form.setFieldValue("image", variant.data.variant.image);
       form.setFieldValue("price", variant.data.variant.priceDetail.price);
@@ -60,6 +70,9 @@ const EditVariant = (id) => {
           countInStock: values.countInStock,
         }
       );
+
+      alert("Cập nhật variant thành công")
+      // window.location.reload();
       toast({
         status: "success",
         title: "Tạo sản phẩm thành công",
@@ -78,16 +91,17 @@ const EditVariant = (id) => {
   useEffect(() => {
     getVariant();
   }, []);
+
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showModal} className="bg-blue">
         Edit
       </Button>
       <Modal
         title="Add variant"
         open={open}
         onOk={handleOk}
-        confirmLoading={confirmLoading}
+        // confirmLoading={confirmLoading}
         onCancel={handleCancel}
         width={700}
         footer={[
@@ -100,6 +114,7 @@ const EditVariant = (id) => {
             type="primary"
             htmlType="submit"
             onClick={handleOk}
+            className="bg-blue"
           >
             Submit
           </Button>,
@@ -126,25 +141,25 @@ const EditVariant = (id) => {
           form={form}
         >
           <Form.Item label="Name" name="name" rules={[{ required: true }]}>
-            <Input />
+            <Input className="with-100" />
           </Form.Item>
           <Form.Item label="Image" name="image" rules={[{ required: true }]}>
-            <Input />
+            <Input className="with-100" />
           </Form.Item>
           <Form.Item label="Price" name="price">
-            <InputNumber />
+            <InputNumber className="with-100" />
           </Form.Item>
           <Form.Item label="Sale Ratio" name="saleRatio">
-            <InputNumber />
+            <InputNumber className="with-100" />
           </Form.Item>
           <Form.Item label="Color" name="color">
-            <Input />
+            <Input className="with-100" />
           </Form.Item>
           <Form.Item label="Size" name="size">
-            <Input />
+            <Input className="with-100" />
           </Form.Item>
           <Form.Item label="Count In Stock" name="countInStock">
-            <Input />
+            <InputNumber className="with-100" />
           </Form.Item>
         </Form>
       </Modal>

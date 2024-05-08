@@ -16,7 +16,7 @@ router.put("/update-status-order/:id", updateStatusOrder);
 router.post("/:id", authentication, createOrder);
 // thêm router updateOrder (check đk status = 0)
 // thêm router deleteOrder (check đk status = 0)
-router.get("/all",authentication,authorization, getAllOrder);
+router.get("/all", getAllOrder);
 router.get("/:id", getOrderById);
 
 

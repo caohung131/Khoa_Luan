@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { Popconfirm, Space, Table } from "antd";
+import { Button, Popconfirm, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { createApiPjc } from "../../../services";
 import CreateUser from "./CreateUser";
@@ -54,15 +54,16 @@ const UserAdmin = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <EditUser id={record._id} />
+          <EditUser id={record._id}  />
           <Popconfirm
+            className="bg-red" 
             title="Delete user"
             description="Are you sure to delete this user?"
             onConfirm={() => {
               deleteUser(record._id);
             }}
           >
-            <a style={{ color: "red" }}>Delete</a>
+            <Button className="bg-red color-white">Delete</Button>
           </Popconfirm>
         </Space>
       ),

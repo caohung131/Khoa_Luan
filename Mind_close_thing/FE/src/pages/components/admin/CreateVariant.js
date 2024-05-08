@@ -69,7 +69,7 @@ const CreateVariant = (id) => {
   // },[])
   return (
     <>
-      <Button type="dashed" onClick={showModal} color="black">
+      <Button type="primary" onClick={showModal} color="black" className="bg-blue">
         Add variant
       </Button>
       <Modal
@@ -86,9 +86,10 @@ const CreateVariant = (id) => {
           <Button
             key="submit"
             form="myForm"
-            type="dashed"
+            type="primary"
             htmlType="submit"
             onClick={handleOk}
+            className="bg-blue"
           >
             Submit
           </Button>,

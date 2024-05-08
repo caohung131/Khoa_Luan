@@ -47,32 +47,34 @@ function Dashboard() {
   useEffect(() => {
     createApiPjc()
       .get("http://localhost:8000/user")
-      .then((response) => setCustomers(response.data.countUser))
+      .then((response) => setCustomers(response.data.countUser)) // Api đếm user
       .catch((error) => console.error("Error:", error));
   }, []);
   useEffect(() => {
     createApiPjc()
       .get("http://localhost:8000/admin/order/all")
-      .then((response) => setOrders(response.data.orders.length))
+      .then((response) => setOrders(response.data.orders.length)) // đếm số order
       .catch((error) => console.error("Error:", error));
   }, []);
   useEffect(() => {
     createApiPjc()
       .get("http://localhost:8000/product")
-      .then((response) => setInventory(response.data.products.length))
+      .then((response) => setInventory(response.data.products.length)) // đếm số lượng sản phẩm
       .catch((error) => console.error("Error:", error));
   }, []);
   useEffect(() => {
     createApiPjc()
-      .get("http://localhost:8000/admin/order-year?year=2023")
+      .get("http://localhost:8000/admin/order-year?year=2024") // tính tổng doanh thu năm
       .then((response) => setRevenue(response.data.sumTotal))
       .catch((error) => console.error("Error:", error));
   }, []);
+
 
   return (
     <Space size={30} direction="vertical">
       <Typography.Title level={4}>Dashboard</Typography.Title>
       <Space size={80} direction="horizontal">
+
         <DashboardCard
           icon={
             <ShoppingCartOutlined
@@ -88,6 +90,7 @@ function Dashboard() {
           title={"Orders"}
           value={orders}
         />
+
         <DashboardCard
           icon={
             <ShoppingOutlined
@@ -134,6 +137,9 @@ function Dashboard() {
           value={revenue}
         />
       </Space>
+
+    
+      
       <Space>
         <h3>Thống kê: </h3>
         <Radio.Group
@@ -186,12 +192,16 @@ function RecentOrders() {
     });
   };
 
+
+  //api lấy order ngày
   useEffect(() => {
     createApiPjc()
       .get(`http://localhost:8000/admin/order-today`)
       .then((response) => setOrders(response.data.orderToday))
       .catch((error) => console.error("Error:", error));
   }, []);
+
+  // console.log(orders)
   const deleteUser = async (id) => {
     try {
       await deleteUser(id);
@@ -350,9 +360,11 @@ function DashboardChart() {
         const response = await createApiPjc().get(
           `http://localhost:8000/admin/order-month?month=${month}`
         );
+
+        // console.log(response);
         const result = response;
         chartData.labels.push(`Tháng ${month}`);
-        chartData.datasets[0].data.push(result.countOrderMonth || 0);
+        chartData.datasets[0].data.push(result.data.countOrderMonth || 0);
       }
 
       setData(chartData);
@@ -369,6 +381,7 @@ function DashboardChart() {
   );
 }
 
+//order tháng
 const RevenueChart = () => {
   const { accessToken } = JSON.parse(localStorage.getItem("user/admin"));
 
@@ -407,7 +420,7 @@ const RevenueChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Tháng ${month}`);
-        chartData.datasets[0].data.push(result.sumTotal || 0);
+        chartData.datasets[0].data.push(result.data.sumTotal || 0);
       }
 
       setData(chartData);
@@ -424,6 +437,8 @@ const RevenueChart = () => {
   );
 };
 
+
+//order Năm
 const YearlyRevenueChart = () => {
   const { accessToken } = JSON.parse(localStorage.getItem("user/admin"));
 
@@ -443,6 +458,7 @@ const YearlyRevenueChart = () => {
   useEffect(() => {
     const { accessToken } = JSON.parse(localStorage.getItem("user/admin"));
 
+    //tạo hàm lấy data
     const fetchData = async () => {
       const currentYear = new Date().getFullYear();
       const years = Array.from(
@@ -453,7 +469,7 @@ const YearlyRevenueChart = () => {
         labels: [],
         datasets: [
           {
-            label: "Revenue",
+            label: "Doanh thu VND",
             data: [],
             backgroundColor: "rgba(255, 0, 0, 0.6)",
             borderColor: "rgba(75,192,192,1)",
@@ -468,7 +484,11 @@ const YearlyRevenueChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Năm ${year}`);
-        chartData.datasets[0].data.push(result.sumTotal || 0);
+        chartData.datasets[0].data.push(result.data.sumTotal || 0);
+
+      // console.log(year);
+      // console.log(response.data.sumTotal);
+      // console.log(result.data.sumTotal);
       }
 
       setData(chartData);
@@ -524,7 +544,7 @@ const YearlyOrderChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Năm ${year}`);
-        chartData.datasets[0].data.push(result.countOrderYear || 0);
+        chartData.datasets[0].data.push(result.data.countOrderYear || 0);
       }
 
       setData(chartData);
@@ -540,6 +560,8 @@ const YearlyOrderChart = () => {
     </div>
   );
 };
+
+//order Ngày
 const DailyRevenueChart = () => {
   const [data, setData] = useState({
     labels: [],
@@ -557,13 +579,14 @@ const DailyRevenueChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       const today = new Date();
-      const currentDay = today.getDate(); // Lấy ngày hiện tại
-      const days = Array.from({ length: 7 }, (_, index) => currentDay - index);
+      const currentDay = 31 // Lấy ngày hiện tại
+      const days = Array.from({ length: currentDay  }, (_, index) => (currentDay - index)
+);
       const chartData = {
         labels: [],
         datasets: [
           {
-            label: "Revenue",
+            label: "Doanh thu",
             data: [],
             backgroundColor: "rgba(255, 0, 0, 0.6)",
             borderColor: "rgba(75,192,192,1)",
@@ -578,7 +601,7 @@ const DailyRevenueChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Ngày ${day}`);
-        chartData.datasets[0].data.push(result.sumTotal || 0);
+        chartData.datasets[0].data.push(result.data.sumTotal || 0);
       }
 
       setData(chartData);
@@ -632,7 +655,7 @@ const DailyOrderChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Ngày ${day}`);
-        chartData.datasets[0].data.push(result.countOrderToday || 0);
+        chartData.datasets[0].data.push(result.data.countOrderToday || 0);
       }
 
       setData(chartData);
@@ -648,6 +671,9 @@ const DailyOrderChart = () => {
     </div>
   );
 };
+
+
+// Người dùng mới ngày tháng năm
 const DailyUserChart = () => {
   const { accessToken } = JSON.parse(localStorage.getItem("user/admin"));
 
@@ -688,7 +714,9 @@ const DailyUserChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Ngày ${day}`);
-        chartData.datasets[0].data.push(result.countNewUsersDay || 0);
+        chartData.datasets[0].data.push(result.data.countNewUsersDay || 0);
+
+        // console.log(result.data)
       }
 
       setData(chartData);
@@ -746,7 +774,7 @@ const YearlyUserChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Năm ${year}`);
-        chartData.datasets[0].data.push(result.countNewUsersDay || 0);
+        chartData.datasets[0].data.push(result.data.countNewUsersDay || 0);
       }
 
       setData(chartData);
@@ -801,7 +829,7 @@ const MonthlyUserChart = () => {
         );
         const result = await response;
         chartData.labels.push(`Tháng ${month}`);
-        chartData.datasets[0].data.push(result.countNewUsersDay || 0);
+        chartData.datasets[0].data.push(result.data.countNewUsersDay || 0);
       }
 
       setData(chartData);

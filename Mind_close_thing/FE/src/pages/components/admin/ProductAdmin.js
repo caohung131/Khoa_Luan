@@ -1,6 +1,6 @@
 import { useToast } from "@chakra-ui/react";
-import { Pagination, Popconfirm, Space, Table } from "antd";
-import { useEffect, useState } from "react";
+import { Button, Pagination, Popconfirm, Space, Table } from "antd";
+import { useContext, useEffect, useState } from "react";
 import { createApiPjc } from "../../../services";
 import { getProduct } from "../../services";
 import CreateProduct from "./CreateProduct";
@@ -8,7 +8,8 @@ import CreateVariant from "./CreateVariant";
 import EditProduct from "./EditProduct";
 import EditVariant from "./EditVariant";
 import axios from "axios";
-
+import "./cssAdmin.css"
+import { DataContext } from "../../../useContextData";
 
 const ManageProduct = () => {
   const [pageSize, setPageSize] = useState(3);
@@ -19,31 +20,37 @@ const ManageProduct = () => {
   const [variantId, setVariantId] = useState();
   const [dataVariants, setDataVariants] = useState();
 
+  const productData = useContext(DataContext)
+
+  // console.log(productData.productData.products)
+
 
   const transformData = (data) => {
     return data.map((item) => {
       return {
         ...item,
-        key: item._id,
+        key: item?._id,
       };
     });
   };
 
+  useEffect( ()=> {
+    setProducts(productData?.productData?.products)
+  },[])
 
-  
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/product")
-      .then((response) => {
-        console.log(response.data.products)
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8000/product")
+  //     .then((response) => {
+  //       // console.log(response.data.products)
 
-        setProducts(response.data.products); // call api trả về data là mảng 
+  //       setProducts(response.data.products); // call api trả về data là mảng 
         
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy danh sách sản phẩm:", error);
-      });
-  }, []);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Lỗi khi lấy danh sách sản phẩm:", error);
+  //     });
+  // }, []);
 
   // const transformedProducts = transformData(products); // Hàm để dữ liệu product từ Obj sang mảng
   // // console.log(transformedProducts);
@@ -150,8 +157,9 @@ const ManageProduct = () => {
       render: (_, record) => (
         <Space size="middle">
           <CreateVariant id={record._id} />
-          <EditProduct id={record._id} />
+          <EditProduct id={record._id}  />
           <Popconfirm
+            className="bg-red"
             style={{ color: "red" }}
             title="Delete product"
             description="Are you sure to delete this product?"
@@ -159,7 +167,7 @@ const ManageProduct = () => {
               handleDeleteOrder(record._id);
             }}
           >
-            <a style={{ color: "red" }}>Delete</a>
+            <Button className="bg-red color-white">Delete</Button>
           </Popconfirm>
         </Space>
       ),
@@ -167,6 +175,10 @@ const ManageProduct = () => {
   ];
 
   const expandedRowRender = (record) => {
+    {
+    console.log(record);
+
+    }
     const columns = [
       {
         title: "Image",
@@ -224,8 +236,9 @@ const ManageProduct = () => {
         key: "operation",
         render: (_, variants) => (
           <Space size="middle">
-            <EditVariant id={variants._id} />
+            <EditVariant id={variants._id}  />
             <Popconfirm
+              className="bg-red color-white with100"
               style={{ color: "red" }}
               title="Delete product"
               description="Are you sure to delete this product?"
@@ -233,7 +246,7 @@ const ManageProduct = () => {
                 handleDeleteVariant(variants._id);
               }}
             >
-              <a style={{ color: "red" }}>Delete</a>
+              <Button style={{ color: "red" }}>Delete</Button>
             </Popconfirm>
           </Space>
         ),
@@ -244,6 +257,7 @@ const ManageProduct = () => {
       <Table
         columns={columns}
         dataSource={record.variants}
+        // dataSource={products}
         pagination={true}
         record={record}
       />
@@ -254,15 +268,17 @@ const ManageProduct = () => {
   return (
     <>
       <CreateProduct />
-      <Table
-        columns={columns}
-        dataSource={transformData(products) } // nơi đổ product từ antd, do nó chưa có id chuẩn nên chưa nhận chuẩn cần set lại id
-        pagination={true}
-        // expandable={{ expandedRowRender, defaultExpandedRowKeys: [] }}
-          expandable={{ expandedRowRender }}
-
-        style={{ marginTop: "10px" }}
-      />
+      {
+        products && ( <Table
+          columns={columns}
+          dataSource={transformData(products)} // nơi đổ product từ antd, do nó chưa có id chuẩn nên chưa nhận chuẩn cần set lại id
+          pagination={true}
+          // expandable={{ expandedRowRender, defaultExpandedRowKeys: [] }}
+            expandable={{ expandedRowRender }}
+  
+          style={{ marginTop: "10px" }}
+        />)
+      }
       <Pagination
         current={pageIndex}
         pageSize={pageSize}

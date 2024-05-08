@@ -4,7 +4,7 @@ import { Button, Modal,  Form,
     InputNumber,  Select, } from 'antd';
 import { useToast } from "@chakra-ui/react";
 import { createUser, getUserById } from '../../services';
-
+import "./cssAdmin.css"
 
 
 
@@ -19,6 +19,7 @@ const EditUser = (id) => {
     setOpen(true);
   };
   const handleOk = () => {
+    
     setConfirmLoading(true);
     setTimeout(() => {
       setOpen(false);
@@ -26,7 +27,7 @@ const EditUser = (id) => {
     }, 2000);
   };
   const handleCancel = () => {
-    console.log('Clicked cancel button');
+    // console.log('Clicked cancel button');
     setOpen(false);
   };
 
@@ -42,12 +43,12 @@ const EditUser = (id) => {
   };
 
   const onFinish = async (values) => {
-    const formdata = new FormData()
-    formdata.append("username", values.username)
-    formdata.append("email", values.email)
-    formdata.append("role", values.role)
+    // const formdata = new FormData()
+    // formdata.append("username", values.username)
+    // formdata.append("email", values.email)
+    // formdata.append("role", values.role)
         try {
-            const result = await createUser(formdata)
+            // const result = await createUser(formdata)
 
             toast({
                 status: "success",
@@ -68,7 +69,7 @@ const EditUser = (id) => {
       }, []);
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showModal} className="bg-blue">
         Edit
       </Button>
       <Modal
@@ -78,7 +79,21 @@ const EditUser = (id) => {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         width={700}
-
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            form="myForm"
+            type="primary"
+            htmlType="submit"
+            onClick={handleOk}
+            className='bg-blue'
+          >
+            OK
+          </Button>,
+        ]}
       >
 
         <Form

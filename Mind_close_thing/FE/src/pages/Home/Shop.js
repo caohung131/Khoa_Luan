@@ -1,40 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import "./Shop.css";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
+import { DataContext } from "../../useContextData";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const {productData, dataSearch, categoryData} = useContext(DataContext)
+
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/product")
-      .then((response) => {
-        setProducts(response.data.products);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy danh sách sản phẩm:", error);
-      });
-  }, []);
+    // (dataSearch.length == 0) ? setProducts(productData?.products) : setProducts(dataSearch) 
+    if(dataSearch.length == 0) {
+      setProducts(productData.products)
+    } else {
+      setProducts(dataSearch) 
+    }
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:8000/category")
-      .then((response) => {
-        // console.log(response)
-        console.log(response.data.products)
+    setCategories(categoryData)
 
-        setCategories(response.data.categories);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi lấy danh sách sản phẩm:", error);
-      });
-  }, []);
+  },[productData.products, dataSearch, categoryData])
+
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:8000/product")
+  //     .then((response) => {
+  //       setProducts(response.data.products);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Lỗi khi lấy danh sách sản phẩm:", error);
+  //     });
+  // }, []);
+
+  // console.log(selectedCategory)
+  console.log(categoryData)
+  console.log(categories)
+  
+
+
+
 
   const formatNumber = (number) => {
     // console.log('number'+number)
@@ -65,10 +74,9 @@ const Shop = () => {
             ))}
         </div>
         <div className="product">
-          {products
-            .filter(
-              (data) =>
-                !selectedCategory || data.category.name === selectedCategory
+          {products &&  //có product mới chạy
+            products.filter((data) =>
+                !selectedCategory || data?.category.name === selectedCategory //trả về category null hoặc trả về ten theo category
             )
             .map((data) => (
               <div className="containerz" key={data.id}>

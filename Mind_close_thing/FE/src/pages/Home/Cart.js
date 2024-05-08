@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Headers from "./Header";
 import Footer from "./Footer";
 import { Button, message } from "antd";
@@ -19,7 +19,44 @@ export default function Cart() {
   const totalPrice = user?.cart?.totalPrice || 0;
 
   // console.log(user)
-  // console.log(cartDetails)
+  // console.log(user.cart.cartDetail)
+
+
+  //kt giỏ về cũ
+  // try {
+    
+
+  //   cartDetails.map(async (item) => {
+  //     // console.log(item.variant)
+      
+  //     let variant = await createApiPjc().get(
+  //       `http://localhost:8000/variant/${item.variant}`
+  //     )
+
+  //     console.log(variant.data.variant)
+  //     console.log(variant.data.variant.countInStock)
+  //     let countInStock = variant.data.variant.countInStock
+
+  //     console.log(item.quantity)
+  //     console.log(countInStock)
+
+  //     // if(item.quantity > variant.data.variant.countInStock) {
+  //     //   const response = await createApiPjc().put(
+  //     //     "http://localhost:8000/user/cart",
+  //     //     {
+  //     //       quantity: countInStock,
+  //     //     },
+         
+  //     //   );
+  //     //   console.log(response.data)
+  //     // }
+
+
+  //   })
+  // } catch (error) {
+  //   console.log(error.message)
+  // }
+  //
 
   const transformData = (data) => {
     return data.map((item) => {
@@ -32,17 +69,21 @@ export default function Cart() {
 
   const handlePay = async () => {
     // console.log(cartDetails)
-    
+
     const result = await createApiPjc().post(
       `http://localhost:8000/order/${user._id}`,
       {
         // orderedBy: user._id,
         orderDetail: transformData(cartDetails),
-        shippingAddress: user.shippingAddress 
+        shippingAddress: user.shippingAddress
       }
-      
+
     )
     console.log(result)
+    // message.success("Thanh toán thành công")
+    alert("Thanh toán thành công")
+    window.location.reload()
+   
     // alert('a')
   };
 

@@ -21,7 +21,7 @@ const addInterceptorResponse = (instance) => {
       try {
         const result = await axios.get(
           `http://localhost:8000/user/refeshToken/${JSON.parse(
-            localStorage.getItem("id")
+            localStorage?.getItem("id")
           )}`
         );
         localStorage.setItem("refreshToken", result.data.refreshToken);

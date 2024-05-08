@@ -2,9 +2,10 @@ import { useToast } from "@chakra-ui/react";
 import { Button, Form, Input, Popconfirm, Select, Space, Table } from "antd";
 // import { Button, Form, Input, Modal, Select } from "antd";
 import './cssAdmin.css'
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { createApiPjc } from "../../../services";
 import EditOrder from "./EditOrder.jsx";
+import { DataContext } from "../../../useContextData.js";
 
 const { Option } = Select;
 
@@ -14,6 +15,20 @@ const OrderAdmin = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [number, setNumber] = useState();
 
+  const {orderData, setOrderData} = useContext(DataContext)
+
+
+  useEffect(() => {
+
+    setOrders([...orderData.orders])
+    // console.log('first')
+  },[])
+
+  // console.log(dataOrder.orderData.orders)
+
+
+
+
   const transformData = (data) => {
     return data.map((item) => {
       return {
@@ -22,31 +37,35 @@ const OrderAdmin = () => {
       };
     });
   };
+
+  // console.log(dataOrder?.orderData.data.orders);
+
   // const transformedOrders = transformData(orders);
 
-  useEffect(() => {
-    createApiPjc()
-      .get(`http://localhost:8000/admin/order/all`)
-      .then((response) => setOrders(response.data.orders))
-      .catch((error) => console.error("Error:", error));
-  }, []);
+  //call api trong
+  // useEffect(() => {
+  //   createApiPjc()
+  //     .get(`http://localhost:8000/admin/order/all`)
+  //     .then((response) => setOrders(response.data.orders))
+  //     .catch((error) => console.error("Error:", error));
+  // }, []);
 
-  useEffect(() => {
-    createApiPjc()
-      .get(`http://localhost:8000/admin/${selectedCategory}${number}`)
-      .then((response) => {
-        if (selectedCategory === "/order-day?day=") {
-          setOrders(response.data.orderToday);
-        } else if (selectedCategory === "/order-month?month=") {
-          setOrders(response.data.orderMonth);
-        } else if (selectedCategory === "/order-year?year=") {
-          setOrders(response.data.orderYear);
-        } else {
-          setOrders(response.data.order);
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  }, [selectedCategory]);
+  // useEffect(async () => {
+  //   await createApiPjc()
+  //     .get(`http://localhost:8000/admin/${selectedCategory}${number}`)
+  //     .then((response) => {
+  //       if (selectedCategory === "/order-day?day=") {
+  //         setOrders(response.data.orderToday);
+  //       } else if (selectedCategory === "/order-month?month=") {
+  //         setOrders(response.data.orderMonth);
+  //       } else if (selectedCategory === "/order-year?year=") {
+  //         setOrders(response.data.orderYear);
+  //       } else {
+  //         setOrders(response.data.order);
+  //       }
+  //     })
+  //     .catch((error) => console.error("Error:", error));
+  // }, [selectedCategory]);
 
   const deleteUser = async (id) => {
     try {
@@ -117,7 +136,7 @@ const OrderAdmin = () => {
     return (
       <Table
         columns={columns}
-        dataSource={record.orderDetail}
+        dataSource={record?.orderDetail}
         pagination={false}
       />
     );
@@ -168,7 +187,8 @@ const OrderAdmin = () => {
 
       render: (_, record) => (
         <Space size="middle" className= "bg-blue color-white" >
-          <EditOrder id={record._id}  className= "bg-blue color-white" />
+          {/* {console.log(record.orderedBy.email)} */}
+          <EditOrder id={record._id} className= "bg-blue color-white" value= {orders} setOrders={setOrders}  />
           {/* {console.log(record)} */}
           {/* <EditProduct id={record._id} /> */}
           {/* <Popconfirm

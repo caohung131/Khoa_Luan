@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
   const updateUser = async () => {
     try {
       const a = !!localStorage.getItem("user"); // chuyển về boolean 
-      console.log(a);
+      // console.log(a);
       const response = await createApiPjc().get(              //1.Tạo api get user hiện tại
         "http://localhost:8000/user/get-current"
       );

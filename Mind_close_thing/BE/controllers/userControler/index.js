@@ -343,6 +343,7 @@ async function calculateTotalPrice(cartDetail) {
       .findById(item.variant)
       .select("priceDetail");
 
+      //th không có phần % giảm
     if (!variant.priceDetail.saleRatio) {
       const price = variant.priceDetail.price * item.quantity;
       if (!isNaN(price)) {
@@ -350,6 +351,7 @@ async function calculateTotalPrice(cartDetail) {
         totalPrice += price;
       }
     } else {
+      //th có phần % giảm
       const price = variant.priceDetail.priceAfterSale * item.quantity;
       if (!isNaN(price)) {
         // totalPrice += [Math.round(price / 1000) * 1000];
@@ -368,19 +370,20 @@ const updateCart = async (req, res) => {
     const userId = req.user._id?.toString();
     const { variant, quantity, action } = req.body;
 
+    // console.log(countInStock)
+    // console.log(quantity)
+
 
     if (!variant) {
       return res.status(200).json({ status: "error", message: "Missing inputs" });
     }
 
+    //lấy variant đó
     const variantEle = await variantModel.findById(variant);
 
     // console.log(variantEle)
 
-    // return 0;
-
     //TH đã có mặt hàng này trong giỏ rồi
-
     // Check sản phẩm order có nhiều hơn sản phẩm trong kho hay không?
     if (variantEle.countInStock >= quantity) {
       const user = req.user;
@@ -392,8 +395,8 @@ const updateCart = async (req, res) => {
         }
       );
 
+      // Nếu đã có mặt hàng này trong giỏ hàng
       if (alreadyVariant) {
-        // Nếu đã có mặt hàng này trong giỏ hàng
         let update = { $inc: { "cart.cartDetail.$.quantity": quantity } }; // khởi tạo biến $inc
 
         if (action === 'changeQuantity') { // nếu bằng change quantity thì gán lại biến $set  
@@ -402,7 +405,7 @@ const updateCart = async (req, res) => {
 
         // cập nhật giỏ hàng với các biến $inc hoặc $set
         const response = await userModel.findOneAndUpdate(
-          { _id: userId, "cart.cartDetail.variant": variant, "cart.cartDetail.color": variantEle?.color, "cart.cartDetail.size": variantEle?.size },
+          { _id: userId, "cart.cartDetail.variant": variant, "cart.cartDetail.color": variantEle?.color, "cart.cartDetail.size": variantEle?.size},
           update,
           { new: true }
         );
@@ -446,7 +449,13 @@ const updateCart = async (req, res) => {
           mes: response ? response : "something went wrong ",
         });
       }
-    } else {
+    }
+    //  else if(quantity > variantEle.countInStock) {
+    //   //TH giỏ hàng bị thêm lớn hơn trong kho
+    //   // quantity = variantEle.countInStock; // gán lại đối tượng lớn nhất trong giỏ
+
+    // }
+     else {
       return res
         .status(400)
         .json({ message: "Không thể thêm quá số lượng sản phẩm có sẵn" });

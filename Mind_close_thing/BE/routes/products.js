@@ -8,12 +8,13 @@ const {
   getProductByCategory,
   updateProduct,
   getAllProduct,
-} = require("../controllers/product");
+cc} = require("../controllers/product");
 const { authentication } = require("../middlewares/authenticator");
 const { authorization } = require("../middlewares/authorization");
 
 // GET
 router.get("/", getAllProduct);
+
 router.get("/get-all-paging", getAllProductPaging);
 router.get("/get-by-category", getProductByCategory);
 router.get("/:id", getProductById);
@@ -24,5 +25,15 @@ router.put("/:id",authentication,authorization, updateProduct);
 
 // DELETE
 router.delete("/:id",authentication,authorization, deleteProduct);
+
+
+// router.get("/searchName", (req,res) => {
+//   try {
+//     const body= req.params;
+//     console.log(body)
+//   } catch (error) {
+//     error.message = "lỗi"
+//   }
+// });
 
 module.exports = router;

@@ -4,7 +4,7 @@ import { Button, Modal,  Form,
     InputNumber,  Select, } from 'antd';
 import { useToast } from "@chakra-ui/react";
 import { createProduct, createUser } from '../../services';
-
+import "./cssAdmin.css"
 
 
 
@@ -56,7 +56,7 @@ const CreateUser = () => {
     }
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showModal} className='bg-blue'>
         Create a new user
       </Button>
       <Modal

@@ -5,24 +5,25 @@ import { useNavigate } from "react-router-dom";
 import {UserProvider } from "../../../UserContext"
 
 const {user} = UserProvider;
- 
-// console.log(user)
 
-
-const handleClick = () => {
-  const navigate = new useNavigate();
-  // localStorage.removeItem("user/admin");
-  // localStorage.removeItem("user/user");
-  navigate("/");
-}
 
 const onClick = ({ key }) => {
-  message.info(`Click on item ${key}`);
-  const navigate = new useNavigate();
+  // const navigate = new useNavigate();
+  localStorage.removeItem("user/admin");
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refeshToken");
+  localStorage.removeItem("id");
+  window.location.assign("http://localhost:3000")
 
   // handleClick();
-  navigate("/2");
 };
+
+const User = JSON.parse(localStorage.getItem("user"))
+
+try {
+} catch (error) {
+  
+}
 
 const items = [
   {
@@ -40,7 +41,7 @@ const AdminName = () => (
   >
     <a onClick={(e) => e.preventDefault()}>
       <Space>
-        Username
+        {User?.email}
         <DownOutlined />
       </Space>
     </a>

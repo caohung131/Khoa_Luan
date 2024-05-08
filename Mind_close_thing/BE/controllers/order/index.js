@@ -17,12 +17,12 @@ const createOrder = async (req, res) => {
     .populate("cart.cartDetail.variant"); // tham chiếu để đổ variant
 
 
-  // const validate = orderSchema.validate(input); // validate các dữ liệu nhập vào
+  const validate = orderSchema.validate(input); // validate các dữ liệu nhập vào
 
 
-  // if (validate.error) {
-  //   return res.status(400).json({ error: validate.error.message });
-  // }
+  if (validate.error) {
+    return res.status(400).json({ error: validate.error.message });
+  }
 
 
   try {
@@ -33,6 +33,7 @@ const createOrder = async (req, res) => {
       });
     }
 
+    //Th có trong giỏ hàng rồi
     for (let i = 0; i < userCart?.cart.cartDetail.length; i++) { // cho 1 vòng lặp tại card detail
       const variantId = userCart.cart.cartDetail[i].variant; // tìm id variant giỏ hàng detail
       const variant = await variantModel.findById(variantId);  // tìm trong bảng variant từ id đó
@@ -45,10 +46,10 @@ const createOrder = async (req, res) => {
         userCart.cart.cartDetail[i]?.quantity
       ) {
         // console.log(variant.countInStock);
-        variant.countInStock -= userCart.cart.cartDetail[i].quantity;
+        variant.countInStock -= userCart.cart.cartDetail[i].quantity; // trừ số lượng từ giỏ hàng của variant đó
         console.log("variantCountInStock", variant.countInStock);
         const product = await productModel.findById(variant.productId);
-        product.countInStock -= userCart?.cart?.cartDetail[i].quantity;
+        product.countInStock -= userCart?.cart?.cartDetail[i].quantity; // trừ số lượng của product 
         console.log("product.countInStock", product.countInStock);
         // Tính giá của order
 
@@ -61,6 +62,7 @@ const createOrder = async (req, res) => {
       }
     }
 
+    // tạo order
     const newOrder = await orderModel.create({
       orderedBy: userId,
       shippingAddress: input.shippingAddress,
@@ -70,6 +72,7 @@ const createOrder = async (req, res) => {
       totalPrice: userCart?.cart.totalPrice,
     });
 
+    //gán lại giỏ hàng user bằng rỗng
     userCart.cart = {};
     await userCart.save();
     console.log(userCart);
@@ -86,7 +89,9 @@ const createOrder = async (req, res) => {
 const getOrderById = async (req, res) => {
   try {
     const orderId = req.params.id;
-    const order = await orderModel.findById(orderId).populate("orderDetail");
+    const order = await orderModel.findById(orderId)
+    .populate("orderDetail")
+    .populate('orderedBy')
 
     return res.status(200).json({ order });
   } catch (error) {

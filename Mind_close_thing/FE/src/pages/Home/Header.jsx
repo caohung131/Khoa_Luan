@@ -6,8 +6,14 @@ import { useUser } from "../../UserContext";
 import { getQuantityInCart } from "../../helper";
 import CartDropdown from "./CartDropdown";
 import "./Home.css";
+import { DataContext } from "../../useContextData";
 
 const Header = () => {
+  const { productData, setProductData, setDataSearch, dataSearch } = useContext(DataContext)
+
+  const [newProduct, setNewProduct] = useState(productData.products)
+  console.log(newProduct);
+
   const navigate = new useNavigate();
   const form = useRef();
   const name = JSON.parse(localStorage.getItem("user"));
@@ -100,6 +106,20 @@ const Header = () => {
     );
   };
 
+  //search
+  const handleSearch = () => {
+    console.log(document.querySelector("#search_user").value)
+    const searchEle = document.querySelector("#search_user");
+    const newData = productData?.products.filter(item => {
+      return item?.name.toUpperCase().includes(searchEle?.value.toUpperCase());
+      // console.log(item.name)
+    })
+    console.log(newData)
+    setDataSearch(newData)
+  }
+
+  console.log(dataSearch)
+
   return (
     <>
       <div>
@@ -110,8 +130,10 @@ const Header = () => {
                 type="text"
                 placeholder="Tìm kiếm sản phẩm"
                 className="p-2.5 w-[250px] border border-[#3c3c3]"
+                id="search_user"
+                onChange={handleSearch}
               />
-              <div className="cursor-pointer  bg-[#545457] text-white px-3 py-2.5  rounded-sm">
+              <div className="cursor-pointer  bg-[#545457] text-white px-3 py-2.5  rounded-sm" onClick={handleSearch} >
                 <i className="fa-solid fa-magnifying-glass" />
               </div>
               <ul>
@@ -195,7 +217,7 @@ const Header = () => {
               <div className="ml-4">
                 
                 <li>
-                  <Link href="#">Áo Thun</Link>
+                  <Link href="/shop">Áo Thun</Link>
                 </li>
                 <li>
                   <Link href="#">Baby Tee</Link>

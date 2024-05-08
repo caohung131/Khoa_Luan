@@ -12,6 +12,10 @@ export default function SimilarProducts() {
 
   const [productData, setProductData] = useState([]);
 
+
+
+  // console.log(productData)
+
   const handleAddToCart = (productItem) => {
     const isAuthenticated = !!localStorage.getItem("user");
     if (!isAuthenticated) {
@@ -80,10 +84,10 @@ export default function SimilarProducts() {
 
   const product = productData.map((item) => (
     <Product
-      name={item.name}
-      url={item.thumbnail}
-      price={item.detailProduct.material}
-      description={item.description}
+      name={item?.name}
+      url={item?.thumbnail}
+      price={item?.detailProduct?.material}
+      description={item?.description}
       item={item}
       onAddToCart={handleAddToCart}
     />

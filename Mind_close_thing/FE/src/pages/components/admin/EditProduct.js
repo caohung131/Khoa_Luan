@@ -3,6 +3,7 @@ import { Button, Form, Input, Modal, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { createApiPjc } from "../../../services";
 import { getProductById } from "../../services";
+import "./cssAdmin.css"
 
 const EditProduct = (id) => {
   const [open, setOpen] = useState(false);
@@ -30,7 +31,7 @@ const EditProduct = (id) => {
     try {
       const product = await createApiPjc().get(
         `http://localhost:8000/product/${id.id}`);
-      console.log(product.data)
+      // console.log(product.data)
 
       setProduct(product);
       form.setFieldValue("name", product.data.product.name);
@@ -52,7 +53,7 @@ const EditProduct = (id) => {
 
 
   const onFinish = async (values) => {
-    console.log(values);
+    // console.log(values)
     try {
       const result = await createApiPjc().put(
         `http://localhost:8000/admin/product/${id.id}`,
@@ -92,7 +93,7 @@ const EditProduct = (id) => {
   return (
     <>
 
-      <Button type="danger" onClick={showModal}>
+      <Button type="danger" onClick={showModal} className="bg-orange color-white">
         Edit
       </Button>
       <Modal

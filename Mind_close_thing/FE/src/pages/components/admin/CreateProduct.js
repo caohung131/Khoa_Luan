@@ -2,6 +2,7 @@ import { useToast } from "@chakra-ui/react";
 import { Button, Form, Input, Modal, Select } from "antd";
 import React, { useState } from "react";
 import { createApiPjc } from "../../../services";
+import "./cssAdmin.css"
 
 const CreateProduct = () => {
   const [open, setOpen] = useState(false);
@@ -57,7 +58,7 @@ const CreateProduct = () => {
   };
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      <Button type="primary" onClick={showModal} className="bg-blue">
         Create a new product
       </Button>
       <Modal
