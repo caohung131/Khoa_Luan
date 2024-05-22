@@ -1,0 +1,59 @@
+.input {
+    width: 100%;
+}
+
+/* button, [type='button'] {
+    background-color: #1677ff;
+} */
+
+.bg-red {
+    background-color: red !important;
+}
+
+.bg-green {
+    background-color: green !important;;
+}
+
+.bg-orange {
+    background-color: orange !important;
+}
+
+.bg-yellow {
+    background-color: yellow !important;
+}
+
+.color-white {
+    color: white !important;
+}
+
+.bg-blue {
+    background-color: #1677ff !important;
+     
+
+     /* background-color: blue; */
+}
+
+.with-100 {
+    width: 100% !important;
+}
+
+.with-anh {
+    width: 200px !important;
+    height: 200px !important;
+}
+
+.card {
+    width: 100%;
+}
+.card img {
+    width: 25%;
+    height: 100px  !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.with-anh {
+    width: 336px !important;
+    height: 336px !important;
+    margin: 0 auto !important;;
+}

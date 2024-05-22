@@ -1,0 +1,10 @@
+.desc-img {
+  width: -webkit-fill-available;
+}
+
+.desc-header {
+  border: 1px solid black;
+  border-radius: 5px;
+  width: fit-content;
+  padding: 5px 10px;
+}
