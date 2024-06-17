@@ -43,9 +43,10 @@ const CreateVariant = (id) => {
           size: values.size,
           countInStock: values.countInStock,
         }
-      );
 
-      alert('Tạo variant thành công')
+      ).then((response) => alert(response.data.message));
+
+      // alert('Tạo variant thành công')
       window.location.reload();
 
 
@@ -65,10 +66,10 @@ const CreateVariant = (id) => {
   return (
     <>
       <Button type="primary" onClick={showModal} color="black" className="bg-blue">
-        Add variant
+      Thêm variant
       </Button>
       <Modal
-        title="Add variant"
+        title="Thêm variant"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -76,7 +77,7 @@ const CreateVariant = (id) => {
         width={700}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
           <Button
             key="submit"
@@ -86,7 +87,7 @@ const CreateVariant = (id) => {
             onClick={handleOk}
             className="bg-blue"
           >
-            Submit
+            Xác nhận
           </Button>,
         ]}
       >
@@ -109,30 +110,30 @@ const CreateVariant = (id) => {
           id="myForm"
           onFinish={onFinish}
         >
-          <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+          <Form.Item label="Tên" name="name" rules={[{ required: true }]}>
             <Input className="input"/>
           </Form.Item>
-          <Form.Item label="Image" name="image" rules={[{ required: true }]}>
+          <Form.Item label="Ảnh" name="image" rules={[{ required: true }]}>
             <Input className="input" />
           </Form.Item>
-          <Form.Item label="Price" name="price" rules={[{ required: true }]}>
+          <Form.Item label="Giá" name="price" rules={[{ required: true }]}>
             <InputNumber className="input" />
           </Form.Item>
           <Form.Item
-            label="Sale Ratio"
+            label="Giảm %"
             name="saleRatio"
             rules={[{ required: true }]}
           >
             <InputNumber className="input"/>
           </Form.Item>
-          <Form.Item label="Color" name="color" rules={[{ required: true }]}>
+          <Form.Item label="Màu sắc" name="color" rules={[{ required: true }]}>
             <Input className="input"/>
           </Form.Item>
-          <Form.Item label="Size" name="size" rules={[{ required: true }]}>
+          <Form.Item label="Kích thước" name="size" rules={[{ required: true }]}>
             <Input className="input"/>
           </Form.Item>
           <Form.Item
-            label="Count In Stock"
+            label="Số lượng kho"
             name="countInStock"
             rules={[{ required: true }]}
           >

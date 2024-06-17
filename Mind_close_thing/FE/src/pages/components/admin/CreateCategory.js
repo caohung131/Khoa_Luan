@@ -45,9 +45,9 @@ const CreateCategory = ({setCategorys, categorys}) => {
             const result = await createApiPjc().post(`http://localhost:8000/product/createCategory`, {
                 name: values.name,
                 slug: values.slug,
-            });
+            })
 
-            console.log(result.data.category);
+            // console.log(result.data.category);
             // setUser(user.filter((item) => item._id == id));
             
             setCategorys([...categorys,result.data.category ])
@@ -61,10 +61,10 @@ const CreateCategory = ({setCategorys, categorys}) => {
   return (
     <>
       <Button type="primary" onClick={showModal} className='bg-blue'>
-        Create Category
+        Tạo danh mục
       </Button>
       <Modal
-        title="Add Category"
+        title="Tạo danh mục"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -72,7 +72,7 @@ const CreateCategory = ({setCategorys, categorys}) => {
         width={700}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
           <Button
             className='bg-blue'
@@ -82,7 +82,7 @@ const CreateCategory = ({setCategorys, categorys}) => {
             htmlType="submit"
             onClick={handleOk}
           >
-            Submit
+            Xác nhận
           </Button>,
         ]}
 
@@ -108,7 +108,7 @@ const CreateCategory = ({setCategorys, categorys}) => {
       id="myForm"
       onFinish={onFinish}
     >
-      <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Vui lòng điền Name!' }]}>
+      <Form.Item label="Tên danh mục" name="name" rules={[{ required: true, message: 'Vui lòng điền Name!' }]}>
         <Input />
       </Form.Item>
       <Form.Item label="Slug" name="slug" rules={[{ required: true, message: 'Vui lòng điền Slug!' }]}>

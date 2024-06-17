@@ -87,10 +87,10 @@ const EditProduct = (id) => {
     <>
 
       <Button type="danger" onClick={showModal} className="bg-orange color-white">
-        Edit
+        Sửa
       </Button>
       <Modal
-        title="Update product"
+        title="Sửa sản phẩm"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -106,6 +106,7 @@ const EditProduct = (id) => {
             type="primary"
             htmlType="submit"
             onClick={handleOk}
+            className="bg-blue"
           >
             Submit
           </Button>,
@@ -131,16 +132,16 @@ const EditProduct = (id) => {
           onFinish={onFinish}
           id="myForm"
         >
-          <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+          <Form.Item label="Tên" name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item label="Slug" name="slug">
             <Input />
           </Form.Item>
           <Form.Item
-            label="Category"
+            label="Danh mục"
             name="category"
-            rules={[{ required: true, message: "Please select one!" }]}
+            
           >
             <Select>
               <Select.Option value="65465abf81225ec455f35aba">
@@ -172,23 +173,23 @@ const EditProduct = (id) => {
               </Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Material" name="material">
+          <Form.Item label="Chất liệu" name="material" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Form" name="form">
+          <Form.Item label="Form" name="form" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Color" name="color">
+          <Form.Item label="Màu sắc" name="color" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Design" name="design">
+          <Form.Item label="Thiết kế" name="design" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Detail image" name="image">
+          <Form.Item label="Chi tiết ảnh" name="image" >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Thumbnail"
+            label="Đường dẫn"
             name="thumbnail"
             rules={[{ required: true, message: "Please fill the blank!" }]}
           >

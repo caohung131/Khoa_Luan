@@ -7,6 +7,8 @@ import { createApiPjc } from "../../../services";
 import "./Detail_Cart_Info.css";
 
 const DetailsInfo = (data) => {
+  //data trả về product byId
+
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -17,33 +19,27 @@ const DetailsInfo = (data) => {
   const toast = useToast();
   const [selectedVariant, setSelectedVariant] = useState(null);
 
+
+  //tìm ra variant nào theo màu và size
   useEffect(() => {
     if (color && size) {
       const variant = data.productById.variants.find(
         (variant) => variant.color === color && variant.size === size
-
       );
       setSelectedVariant(variant);
-
-
-
     }
 
     // console.log(data)
     //  console.log(selectedVariant);
-
   }, [color, size, data.productById.variants]);
-
-
-
-
-
 
 
 
   const { updateUser } = useUser();
 
   const handleClick = () => {
+
+    //check đã đang nhâp chưa bằng local storage
     const isAuthenticated = !!localStorage.getItem("user");
     if (!isAuthenticated) {
       return alert("Bạn phải đăng nhập trước");
@@ -58,7 +54,7 @@ const DetailsInfo = (data) => {
     const addToCart = async () => {
       try {
 
-        console.log(data)
+        // console.log(data)
         let isError = false; // cứ true là có lỗi
 
         //Kt giỏ hàng lớn hơn hoặc bằng giới hạn kho chưa
@@ -69,13 +65,13 @@ const DetailsInfo = (data) => {
 
           console.log(itemtCart.variant)
           console.log(selectedVariant?._id);
+
+          //kiểm tra số lượng đã vượt trong kho k 
           if (itemtCart?.variant === selectedVariant?._id) {
-            console.log(itemtCart)
             if (itemtCart.quantity >= selectedVariant.countInStock) {
               alert('Số lượng bạn thêm đã vượt quá trong kho')
 
               isError = true;
-             
             }
           }
         })
@@ -88,7 +84,8 @@ const DetailsInfo = (data) => {
         // }
 
         if (!isError) {
-          let response = await createApiPjc().put( //
+          // nếu k lỗi cập nhật vào cart user variantId và số lượng
+          let response = await createApiPjc().put(
             "http://localhost:8000/user/cart",
             {
               variant: selectedVariant._id,
@@ -119,8 +116,9 @@ const DetailsInfo = (data) => {
       }
       updateUser();
     };
+  
+    //callback lại hàm nếu người dùng chọn lại
     if (selectedVariant) {
-      // console.log({ variant: selectedVariant._id, quantity: quantity });
       addToCart();
     } else {
       message.error("Chưa chọn color, size");
@@ -130,8 +128,8 @@ const DetailsInfo = (data) => {
   useEffect(() => {
     //tính giá sau giảm
     setSalePrice(
-      data.productById.priceDetail.price *
-      ((100 - data.productById.priceDetail.saleRatio) / 100)
+      data.productById?.priceDetail?.price *
+      ((100 - data.productById.priceDetail?.saleRatio) / 100)
     );
 
   }, []);
@@ -142,6 +140,8 @@ const DetailsInfo = (data) => {
       .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
+
+  //Validate 
   //filter cac variant co cung mau
   const uniqueColors = new Set();
   const filteredVariants = data.productById.variants.filter((variant) => {
@@ -162,7 +162,8 @@ const DetailsInfo = (data) => {
     return false;
   });
 
-  const inQuantity = () => {
+  //tăng số lượng, Nếu số lượng còn thì kt trong kho lớn hơn số lượng chọn
+    const inQuantity = () => {
     if (selectedVariant?.countInStock ? quantity < selectedVariant?.countInStock : 999) {
       setQuantity(quantity + 1);
     }

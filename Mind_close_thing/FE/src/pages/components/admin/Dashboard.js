@@ -64,7 +64,7 @@ function Dashboard() {
   }, []);
   useEffect(() => {
     createApiPjc()
-      .get("http://localhost:8000/admin/order-year?year=2024") // tính tổng doanh thu năm
+      .get("http://localhost:8000/admin/order-year?year=") // tính tổng doanh thu năm
       .then((response) => setRevenue(response.data.sumTotal))
       .catch((error) => console.error("Error:", error));
   }, []);
@@ -72,7 +72,7 @@ function Dashboard() {
 
   return (
     <Space size={30} direction="vertical">
-      <Typography.Title level={4}>Dashboard</Typography.Title>
+      <Typography.Title level={4}>Thống kê</Typography.Title>
       <Space size={80} direction="horizontal">
 
         <DashboardCard
@@ -87,7 +87,7 @@ function Dashboard() {
               }}
             />
           }
-          title={"Orders"}
+          title={"Tổng số đơn năm"}
           value={orders}
         />
 
@@ -103,7 +103,7 @@ function Dashboard() {
               }}
             />
           }
-          title={"Inventory"}
+          title={"Tổng số sản phẩm"}
           value={inventory}
         />
         <DashboardCard
@@ -118,7 +118,7 @@ function Dashboard() {
               }}
             />
           }
-          title={"Customer"}
+          title={"Tổng người dùng"}
           value={customers}
         />
         <DashboardCard
@@ -133,7 +133,7 @@ function Dashboard() {
               }}
             />
           }
-          title={"Revenue (VND)"}
+          title={"Doanh thu (VND)"}
           value={revenue}
         />
       </Space>
@@ -146,9 +146,9 @@ function Dashboard() {
           value={statistical}
           onChange={(e) => setStatistical(e.target.value)}
         >
-          <Radio.Button value="1">Yearly</Radio.Button>
-          <Radio.Button value="2">Monthly</Radio.Button>
-          <Radio.Button value="3">Daily</Radio.Button>
+          <Radio.Button value="1">Theo năm</Radio.Button>
+          <Radio.Button value="2">Theo tháng</Radio.Button>
+          <Radio.Button value="3">Theo ngày</Radio.Button>
         </Radio.Group>
       </Space>
       <Space size={100} direction="horizontal">
@@ -277,7 +277,7 @@ function RecentOrders() {
 
   const columns = [
     {
-      title: "Customer",
+      title: "Khách hàng",
       dataIndex: "orderedBy",
       key: "orderedBy",
       render: (text) => <a>{text}</a>,
@@ -289,21 +289,21 @@ function RecentOrders() {
       render: (text) => <a>{text === false ? "Un Paid" : "Paid"}</a>,
     },
     {
-      title: "Created at",
+      title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
           <Popconfirm
-            title="Delete product"
-            description="Are you sure to delete this product?"
+            title="Xóa đơn"
+            description="Bạn có chắc chăn xóa?"
             onConfirm={() => {}}
           >
-            <a style={{ color: "red" }}>Delete</a>
+            <a style={{ color: "red" }}>Xóa</a>
           </Popconfirm>
         </Space>
       ),
@@ -312,7 +312,7 @@ function RecentOrders() {
 
   return (
     <>
-      <h3>Recently orders</h3>
+      <h3>Đơn đặt hàng gần đây</h3>
       {orders && (
         <Table
           columns={columns}
@@ -694,7 +694,7 @@ const DailyUserChart = () => {
     const fetchData = async () => {
       const today = new Date();
       const currentDay = today.getDate(); // Lấy ngày hiện tại
-      const days = Array.from({ length: 7 }, (_, index) => currentDay - index);
+      const days = Array.from({ length: 7 }, (_, index) =>  currentDay - index);
       const chartData = {
         labels: [],
         datasets: [

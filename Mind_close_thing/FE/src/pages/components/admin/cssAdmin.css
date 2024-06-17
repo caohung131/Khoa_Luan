@@ -45,11 +45,19 @@
 .card {
     width: 100%;
 }
-.card img {
+
+.price {
+    height: 30px !important;
+}
+/* .card img {
     width: 25%;
     height: 100px  !important;
     display: flex !important;
     justify-content: center !important;
+} */
+
+.card h4 {
+    height: 50px !important;
 }
 
 .with-anh {
@@ -57,3 +65,8 @@
     height: 336px !important;
     margin: 0 auto !important;;
 }
+
+/* .container-77{
+    width: 77% !important;
+    margin:  0 auto !important;
+} */

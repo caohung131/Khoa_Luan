@@ -68,16 +68,14 @@ const ManageProduct = () => {
   const handleDeleteVariant = async (variantId) => {
     try {
       await createApiPjc().delete(
-        `http://localhost:8000/admin/variant/${variantId}`
-      );
-      setProducts((prevOrders) =>
-        prevOrders.filter((order) => order.variants._id !== variantId)
-      );
-      toast({
-        status: "success",
-        title: "Xoá sản phẩm thành công",
-        position: "top",
-      });
+        `http://localhost:8000/variant/${variantId}`
+      ).then((response) => alert(response.data.message))
+      // setProducts((prevProduct) =>
+      //   prevProduct.filter((itemt) => (itemt._id != variantId))
+      // // console.log(prevProduct)
+      // );
+      window.location.reload();
+
     } catch (error) {
       toast({
         status: "error",
@@ -87,13 +85,14 @@ const ManageProduct = () => {
       console.error("Error deleting order:", error);
     }
   };
-  const handleDeleteOrder = async (orderId) => {
+  const handleDeleteProduct = async (id) => {
     try {
       await createApiPjc().delete(
-        `http://localhost:8000/admin/product/${orderId}`
-      );
-      setProducts((prevOrders) =>
-        prevOrders.filter((order) => order._id !== orderId)
+        `http://localhost:8000/admin/product/${id}`
+      ).then((response) => alert(response.data.message))
+
+      setProducts((itemt) =>
+        itemt.filter((product) => product._id !== id)
       );
       toast({
         status: "success",
@@ -117,13 +116,13 @@ const ManageProduct = () => {
 
   const columns = [
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Thumbnail",
+      title: "Ảnh",
       dataIndex: "thumbnail",
       key: "thumbnail",
       render: (value) => (
@@ -138,43 +137,42 @@ const ManageProduct = () => {
             }
           />
         </>
-        // console.log(value.data?.variant?.image)
       ),
     },
     {
-      title: "Category",
+      title: "Danh mục",
       dataIndex: "category",
       key: "category",
       render: (_, record) => <a>{record.category.name}</a>,
     },
     {
-      title: "Quantity",
+      title: "Số lượng",
       key: "countInStock",
       dataIndex: "countInStock",
     },
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
           <CreateVariant id={record._id} />
           <EditProduct id={record._id} />
-
           <Popconfirm
-            title="Bạn có chắc chắn muốn xác nhận không?"
-            okText="Xác nhận"
-            cancelText="Hủy"
-            okButtonProps={{
-              style: { backgroundColor: '#1E90FF', color: 'white' }
-            }}
-            cancelButtonProps={{
-              style: { backgroundColor: '#f0f0f0', color: 'rgba(0, 0, 0, 0.85)' }
+           title="Bạn có chắc chắn muốn xác nhận không?"
+           okText="Xác nhận"
+           cancelText="Hủy"
+           okButtonProps={{
+             style: { backgroundColor: '#1E90FF', color: 'white' }
+           }}
+           cancelButtonProps={{
+             style: { backgroundColor: '#f0f0f0', color: 'rgba(0, 0, 0, 0.85)' }
+           }}
+            onConfirm={() => {
+              handleDeleteProduct(record._id);
             }}
           >
-            <Button className="bg-red color-white">Delete</Button>
-
+            <Button className="bg-red color-white">Xóa</Button>
           </Popconfirm>
-
         </Space>
       ),
     },
@@ -205,12 +203,12 @@ const ManageProduct = () => {
         ),
       },
       {
-        title: "Name",
+        title: "Tên",
         dataIndex: "name",
         key: "name",
       },
       {
-        title: "Color",
+        title: "Màu sắc",
         dataIndex: "color",
         key: "color",
       },
@@ -220,46 +218,46 @@ const ManageProduct = () => {
         key: "size",
       },
       {
-        title: "Price",
+        title: "Giá",
         dataIndex: "priceDetail",
         key: "priceDetail",
         render: (_, variants) => <p>{variants.priceDetail.price}đ</p>,
       },
       {
-        title: "Sale Ratio",
+        title: "Phần trăm giảm",
         dataIndex: "priceDetail",
         key: "priceDetail",
         render: (_, variants) => <a>{variants.priceDetail.saleRatio}%</a>,
       },
       {
-        title: "Quantity",
+        title: "Số lượng",
         dataIndex: "countInStock",
         key: "countInStock",
       },
       {
-        title: "Action",
+        title: "Hành động",
         dataIndex: "operation",
         key: "operation",
         render: (_, variants) => (
           <Space size="middle">
             <EditVariant id={variants._id} />
-         
-
             <Popconfirm
-            title="Bạn có chắc chắn muốn xác nhận không?"
-            okText="Xác nhận"
-            cancelText="Hủy"
-            okButtonProps={{
-              style: { backgroundColor: '#1E90FF', color: 'white' }
-            }}
-            cancelButtonProps={{
-              style: { backgroundColor: '#f0f0f0', color: 'rgba(0, 0, 0, 0.85)' }
-            }}
-          >
-            <Button className="bg-red color-white">Delete</Button>
-
-          </Popconfirm>
-
+              className="bg-red color-white with100"
+              title="Bạn có chắc chắn muốn xác nhận không?"
+              okText="Xác nhận"
+              cancelText="Hủy"
+              okButtonProps={{
+                style: { backgroundColor: '#1E90FF', color: 'white' }
+              }}
+              cancelButtonProps={{
+                style: { backgroundColor: '#f0f0f0', color: 'rgba(0, 0, 0, 0.85)' }
+              }}
+              onConfirm={() => {
+                handleDeleteVariant(variants._id);
+              }}
+            >
+              <Button style={{ color: "red" }}>Xóa</Button>
+            </Popconfirm>
           </Space>
         ),
       },
@@ -278,12 +276,13 @@ const ManageProduct = () => {
 
   return (
     <>
-      <CreateProduct />
+      <CreateProduct/>
       {
         products && (<Table
           columns={columns}
           dataSource={transformData(products)} // nơi đổ product từ antd, do nó chưa có id chuẩn nên chưa nhận chuẩn cần set lại id
           pagination={true}
+          // expandable={{ expandedRowRender, defaultExpandedRowKeys: [] }}
           expandable={{ expandedRowRender }}
 
           style={{ marginTop: "10px" }}
@@ -300,7 +299,7 @@ const ManageProduct = () => {
           setPageSize(pageSize);
         }}
         showSizeChanger
-      // pageSizeOptions={[3, 5, 8]}
+        pageSizeOptions={[3, 5, 8]}
       />
     </>
   );

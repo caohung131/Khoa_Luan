@@ -1,5 +1,5 @@
 import { useToast } from "@chakra-ui/react";
-import { Button, Form, Input, Popconfirm, Select, Space, Table } from "antd";
+import { Breadcrumb, Button, Form, Input, Popconfirm, Select, Space, Table } from "antd";
 // import { Button, Form, Input, Modal, Select } from "antd";
 import '../components/admin/cssAdmin.css'
 import React, { useContext, useEffect, useState } from "react";
@@ -33,41 +33,23 @@ const OrderUser = () => {
     // console.log(JSON.parse(localStorage.getItem('user/admin')) )
     // console.log(JSON.parse(localStorage.getItem('user')) )
 
-    if (JSON.parse(localStorage.getItem('user/admin'))?.id   == item.orderedBy._id
-        || JSON.parse(localStorage.getItem('user'))?.id   == item.orderedBy._id
+    if (JSON.parse(localStorage.getItem('user/admin'))?.id   == item?.orderedBy?._id
+        || JSON.parse(localStorage.getItem('user'))?.id   == item?.orderedBy?._id
   ) {
         return {
           ...item,
-          _id: item._id,
+          _id: item?._id,
         }
     } 
 });
 
 
-  
-
-  // const transformData2 = (data) => {
-  //   return data?.filter((item) => {
-  //       // console.log(item.orderedBy._id)
-  //       // console.log(JSON.parse(localStorage.getItem('user/admin')) )
-  //       // console.log(JSON.parse(localStorage.getItem('user')) )
-
-  //       if (JSON.parse(localStorage.getItem('user/admin')).id   === item.orderedBy._id
-  //           || JSON.parse(localStorage.getItem('user'))?.id   === item.orderedBy._id
-  //     ) {
-  //           return {
-  //             ...item,
-  //             _id: item._id,
-  //           }
-  //       }
-  //   });
-  // };
 
   const transformData = (data) => {
     return data.map((item) => {
       return {
         ...item,
-        key: item._id,
+        key: item?._id,
       };
     });
   };
@@ -80,7 +62,7 @@ const OrderUser = () => {
 
     const columns = [
       {
-        title: "Image",
+        title: "Ảnh",
         render: (_, record) => (
           //trả về orderDetails 
           
@@ -102,23 +84,23 @@ const OrderUser = () => {
         ),
       },
       {
-        title: "Name",
+        title: "Tên",
         dataIndex: "variant",
         key: "variant",
         render: (_, record) => <a>{record.variant?.name }</a>,
       },
       {
-        title: "Color",
+        title: "Màu sắc",
         dataIndex: "variant",
         key: "variant",
         render: (_, record) => <a>{record.variant?.color }</a>,
       },
       {
-        title: "Size",
+        title: "Kích thước size",
         render: (_, record) => <a>{record.variant?.size }</a>,
       },
       {
-        title: "Size",
+        title: "Giá",
         render: (_, record) => <a>{record.variant?.priceDetail?.priceAfterSale}</a>,
       },
       {
@@ -127,7 +109,7 @@ const OrderUser = () => {
         key: "_id",
       },
       {
-        title: "Quantity",
+        title: "Số lượng",
         dataIndex: "quantity",
         key: "quantity",
       },
@@ -157,7 +139,7 @@ const OrderUser = () => {
 
   const columns = [
     {
-      title: "Customer",
+      title: "Email",
       dataIndex: "orderedBy",
       key: "orderedBy",
       render: (_, record) => 
@@ -166,60 +148,60 @@ const OrderUser = () => {
        <a>{record?.orderedBy?.email}</a>
     },
     {
-      title: "User Name",
+      title: "Tên",
       render: (_, record) => 
        <a>{record?.orderedBy?.username}</a>
     },
+    // {
+    //   title: "Created at",
+    //   render: (_, record) => {
+    //     return <a>{record?.orderedBy?.role}</a>
+    //   }
+    // },
     {
-      title: "Created at",
-      render: (_, record) => {
-        return <a>{record?.orderedBy?.role}</a>
-      }
-    },
-    {
-      title: "Phone",
+      title: "Số điện thoại",
       render: (_, record) => {
         return <a>{record?.orderedBy?.phone}</a>
       }
     },
     {
-      title: "Address",
+      title: "Địa chỉ",
       render: (_, record) => {
         return <a>{record?.shippingAddress?.address}</a>
       }
     },
 
     {
-      title: "City",
+      title: "Thành phố",
       render: (_, record) => {
         return <a>{record?.shippingAddress?.city}</a>
       }
     },
 
     {
-      title: "district",
+      title: "Huyện",
       render: (_, record) => {
         return <a>{record?.shippingAddress?.district}</a>
       }
     },
+    // {
+    //   title: "Thanh toán",
+    //   dataIndex: "isPaid",
+    //   key: "isPaid",
+    //   render: (text) => <a>{text === false ? "Un Paid" : "Paid"}</a>,
+    // },
     {
-      title: "Pay",
-      dataIndex: "isPaid",
-      key: "isPaid",
-      render: (text) => <a>{text === false ? "Un Paid" : "Paid"}</a>,
-    },
-    {
-      title: "Created at",
+      title: "Giờ tạo",
       dataIndex: "createdAt",
       key: "createdAt",
     },
     {
-      title: "Total Price",
+      title: "Tổng tiền",
       dataIndex: "totalPrice",
       key: "totalPrice",
     },
     {
-      title: "Status",
+      title: "Trạng thái đơn",
       dataIndex: "status",
       key: "status",
       onchange: (value) => {
@@ -282,13 +264,24 @@ const OrderUser = () => {
           </Button>
         </Form.Item>
       </Form> */}
-      <h2 className="displayFlex">
-        Sản phẩm bạn đã order
-      </h2>
+    
       <Headers />
+
+      <div className="container">
+
+     <br/>
+     <br/>
+
+      <Breadcrumb>
+    <Breadcrumb.Item>
+      <a href="/">Home</a>
+    </Breadcrumb.Item>
+    <Breadcrumb.Item>Sản phẩm bạn đã order</Breadcrumb.Item>
+  </Breadcrumb>
       
       <br />
-      <br />
+
+      
       {orders && (
         <Table
           columns={columns}
@@ -305,6 +298,7 @@ const OrderUser = () => {
           expandable={{ expandedRowRender }}
         />
       )}
+      </div>
     </>
   );
 };

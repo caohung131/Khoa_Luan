@@ -10,7 +10,7 @@ export const UserProvider = ({ children }) => {
 
   const updateUser = async () => {
     try {
-      const a = !!localStorage.getItem("user"); // chuyển về boolean 
+      // const a = !!localStorage.getItem("user"); // chuyển về boolean 
       // console.log(a);
       const response = await createApiPjc().get(              //1.Tạo api get user hiện tại
         "http://localhost:8000/user/get-current"
@@ -24,6 +24,8 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+
+  //Nếu cứ đăng nhập thì tự động lấy dc user hiện tại
   useEffect(() => {
     const token = localStorage?.getItem("user");
     setIsLoggedIn(!!token); // Chuyển đổi thành boolean để kiểm tra đăng nhập

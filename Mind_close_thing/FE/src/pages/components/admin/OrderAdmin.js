@@ -90,75 +90,29 @@ const OrderAdmin = () => {
       });
     }
   };
-  // const expandedRowRender = (record) => {
-  //   const columns = [
-  //     {
-  //       title: "Image",
-  //       dataIndex: "variant",
-  //       key: "variant",
-  //       render: (_, variants) => (
-  //         console.log(variants?.variant)
-  //         // <>
 
-  //         //   <img
-  //         //     width={40}
-  //         //     height={40}
-  //         //     src={variants?.variant?.image}
-  //         //     onError={(e) =>
-  //         //       (e.target.src =
-  //         //         "https://cdn.vectorstock.com/i/preview-1x/65/30/default-image-icon-missing-picture-page-vector-40546530.jpg")
-  //         //     }
-  //         //   />
-  //         // </>
-  //       ),
-  //     },
-  //     {
-  //       title: "Color",
-  //       dataIndex: "color",
-  //       key: "color",
-  //       render: (_, value) => (
-  //         <p>{value?.variant?.name}</p>
-  //       )
-  //     },
-  //     {
-  //       title: "Size",
-  //       dataIndex: "size",
-  //       key: "size",
-  //     },
-  //     {
-  //       title: "Quantity",
-  //       dataIndex: "quantity",
-  //       key: "quantity",
-  //     },
-  //     {
-  //       title: "Action",
-  //       dataIndex: "operation",
-  //       key: "operation",
-  //       render: (_, record) => (
-  //         <Space size="middle">
-  //           <a>Edit</a>
-  //           {console.log(record)}
-  //           <a>Delete</a>
-  //         </Space>
-  //       ),
-  //     },
-  //   ];
+  const handleDeleteOrder = async (id) => {
+    try {
+      // console.log(id);
 
-  //   return (
-  //     <Table
-  //       columns={columns}
-  //       dataSource={record.orderDetail}
-  //       pagination={false}
-  //     />
-  //   );
-  // };
+      await createApiPjc().delete(`http://localhost:8000/order/${id}`)
+      // toast({
+      //   status: "success",
+      //   title: "Xoá người dùng thành công",
+      //   position: "top",
+      // });
+      setOrders(orders.filter((item) => item._id != id));
+    } catch (error) {
+      alert("Xóa order thất bại")
+    }
+  }
 
   const expandedRowRender = (record) => {
-    console.log(record)
+    // console.log(record)
 
     const columns = [
       {
-        title: "Image",
+        title: "Ảnh",
         render: (_, record) => (
           //trả về orderDetails 
 
@@ -179,13 +133,13 @@ const OrderAdmin = () => {
         ),
       },
       {
-        title: "Name",
+        title: "Tên",
         dataIndex: "variant",
         key: "variant",
         render: (_, record) => <a>{record.variant?.name}</a>,
       },
       {
-        title: "Color",
+        title: "Màu sắc",
         dataIndex: "variant",
         key: "variant",
         render: (_, record) => <a>{record.variant?.color}</a>,
@@ -195,7 +149,7 @@ const OrderAdmin = () => {
         render: (_, record) => <a>{record.variant?.size}</a>,
       },
       {
-        title: "Size",
+        title: "Giá ",
         render: (_, record) => <a>{record.variant?.priceDetail?.priceAfterSale}</a>,
       },
       {
@@ -204,7 +158,7 @@ const OrderAdmin = () => {
         key: "_id",
       },
       {
-        title: "Quantity",
+        title: "Số lượng",
         dataIndex: "quantity",
         key: "quantity",
       },
@@ -233,7 +187,7 @@ const OrderAdmin = () => {
 
   const columns = [
     {
-      title: "Customer",
+      title: "Email",
       dataIndex: "orderedBy",
       key: "orderedBy",
       render: (_, record) =>
@@ -242,38 +196,38 @@ const OrderAdmin = () => {
         <a>{record?.orderedBy?.email}</a>
     },
     {
-      title: "User Name",
+      title: "Tên",
       render: (_, record) =>
         <a>{record?.orderedBy?.username}</a>
     },
     {
-      title: "Created at",
+      title: "Ngày tạo",
       render: (_, record) => {
         return <a>{record?.orderedBy?.role}</a>
       }
     },
     {
-      title: "Phone",
+      title: "Số điện thoại",
       render: (_, record) => {
         return <a>{record?.orderedBy?.phone}</a>
       }
     },
     {
-      title: "Address",
+      title: "Địa chỉ",
       render: (_, record) => {
         return <a>{record?.shippingAddress?.address}</a>
       }
     },
 
     {
-      title: "City",
+      title: "Thành phố",
       render: (_, record) => {
         return <a>{record?.shippingAddress?.city}</a>
       }
     },
 
     {
-      title: "district",
+      title: "Huyện",
       render: (_, record) => {
         return <a>{record?.shippingAddress?.district}</a>
       }
@@ -285,22 +239,22 @@ const OrderAdmin = () => {
       render: (text) => <a>{text === false ? "Un Paid" : "Paid"}</a>,
     },
     {
-      title: "Created at",
+      title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
     },
     {
-      title: "Total Price",
+      title: "Giá",
       dataIndex: "totalPrice",
       key: "totalPrice",
     },
     {
-      title: "Status",
+      title: "Trạng thái",
       dataIndex: "status",
       key: "status",
-      onchange: (value) => {
-        console.log(value.target.value);
-      },
+      // onchange: (value) => {
+      //   console.log(value.target.value);
+      // },
       render: (record) => {
         // console.log(record)
         if (record === "0") {
@@ -318,43 +272,115 @@ const OrderAdmin = () => {
 
       }
     },
+    {
+      title: "Hành động",
+      key: "action",
+
+
+      render: (_, record) => (
+        <Space size="middle" className=" color-white" >
+          {/* {console.log(record.orderedBy.email)} */}
+          <EditOrder id={record._id} className="bg-blue color-white" value={orders} setOrders={setOrders} />
+          {/* {console.log(record)} */}
+  
+          <Popconfirm
+              className="bg-red color-white with100"
+              title="Bạn có chắc chắn muốn xác nhận không?"
+              okText="Xác nhận"
+              cancelText="Hủy"
+              okButtonProps={{
+                style: { backgroundColor: '#1E90FF', color: 'white' }
+              }}
+              cancelButtonProps={{
+                style: { backgroundColor: '#f0f0f0', color: 'rgba(0, 0, 0, 0.85)' }
+              }}
+              onConfirm={() => {
+                handleDeleteOrder(record._id);
+              }}
+            >
+              <Button style={{ color: "red" }}>Xóa</Button>
+            </Popconfirm>
+        </Space>
+      ),
+
+
+    },
 
   ];
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-    setSelectedCategory(values.timeSet.category);
-    setNumber(values.timeSet.number);
+  const onFinish = async (values) => {
+    try {
+      // console.log("Received values of form: ", values.timeSet.category);
+      const result = await createApiPjc().get(`http://localhost:8000/admin${values.timeSet.category}`)
+      if (result.data.orderYear) {
+        setOrders(result.data.orderYear)
+      } else 
+      if (result.data.orderMonth) {
+        setOrders(result.data.orderMonth)
+      } else 
+      if (result.data.orderToday) {
+        // if(result.data.orderToday == '') {
+        //   return <p>a</p>
+        // }
+        setOrders(result.data.orderToday)
+      } else if (result.data.orders) {
+        setOrders(result.data.orders)
+      }
+      // console.log(result.data);
+    } catch (error) {
+
+    }
   };
 
   // console.log(orders);
 
+  const handleSearch = (e) => {
+    // console.log(e.target.value);
+    // const searchEle = document.querySelector("#search_user");
+    const newData = orders.filter((item) => {
+      return item?.orderedBy?.email.toUpperCase().includes(e.target.value.toUpperCase()); //trả email bao gồn kí tự nhập
+      // console.log(item.orderedBy.email)
+    });
+
+    if(e.target.value == "") {
+      // console.log(orderData)
+      setOrders(orderData.orders)
+
+    }else if(newData != "") {
+      setOrders(newData)
+    }
+  }
+
   return (
     <>
       <Form onFinish={onFinish}>
-        <Form.Item label="Filter by">
+        <Form.Item label="Tìm theo:">
           <Space.Compact>
             <Form.Item name={["timeSet", "category"]} noStyle>
-              <Select placeholder="Select one">
-                <Option value="">All</Option>
-                <Option value="/order-day?day=">Day</Option>
-                <Option value="/order-month?month=">Month</Option>
-                <Option value="/order-year?year=">Year</Option>
+              <Select placeholder="Tất cả"  style={{
+                  width: "100px",
+                }}>
+                <Option value="/order/all">Tất cả</Option>
+                <Option value="/order-day?day=">Hôm nay</Option>
+                <Option value="/order-month?month=">Tháng này</Option>
+                <Option value="/order-year?year=">Năm nay</Option>
               </Select>
             </Form.Item>
-            <Form.Item name={["timeSet", "number"]} noStyle>
+           
+          </Space.Compact>
+          <Form.Item name={["timeSet", "number"]} noStyle>
               <Input
                 style={{
                   width: "50%",
                 }}
-                placeholder="Input"
+                placeholder="Nhập email bạn cần tìm kiếm"
+                onChange={handleSearch}
               />
             </Form.Item>
-          </Space.Compact>
         </Form.Item>
         <Form.Item label=" " colon={false}>
-          <Button type="primary" htmlType="submit">
-            Submit
+          <Button type="primary" htmlType="submit" className="bg-blue">
+            Tìm kiếm
           </Button>
         </Form.Item>
       </Form>

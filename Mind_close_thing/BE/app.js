@@ -26,6 +26,7 @@ app.use(express.static("client"));
 
 app.use(morgan("combined"))
 app.use(cors({ origin: "*"}))
+// app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -41,11 +41,11 @@ function getItem(label, key, icon, children) {
 }
 
 const items = [
-  getItem("Dashboard", "1", <DesktopOutlined />),
-  getItem("Orders", "2", <ShoppingCartOutlined />),
-  getItem("Product", "3", <DatabaseOutlined />),
-  getItem("User", "4", <UserOutlined />),
-  getItem("Category", "5", <UserOutlined />),
+  getItem("Thống kê", "1", <DesktopOutlined />),
+  getItem("Đơn hàng", "2", <ShoppingCartOutlined />),
+  getItem("Sản phẩm", "3", <DatabaseOutlined />),
+  getItem("Người dùng", "4", <UserOutlined />),
+  getItem("Danh mục", "5", <UserOutlined />),
 ];
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);

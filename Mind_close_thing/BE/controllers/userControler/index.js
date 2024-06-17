@@ -9,15 +9,17 @@ const {
 const userModel = require("../../models/User.js");
 const { error, message } = require("../order/validation.js");
 const User = require("../../models/User.js");
-const nodemailer = require("nodemailer");
-const { OAuth2Client } = require("google-auth-library");
 
-const GOOGLE_MAILER_CLIENT_ID =
-  "1051458480695-c0bk99e282fpu8nou08p0hp2o4n4e42a.apps.googleusercontent.com";
-const GOOGLE_MAILER_CLIENT_SECRET = "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";
-const GOOGLE_MAILER_REFRESH_TOKEN =
-  "1//04DnrxxL5l_MwCgYIARAAGAQSNwF-L9IrLbxQuq_EaB2ufY3EiY552qEaQ_-3os-MlZULq-2lm_xleaV5j_ORy0P7HvPqLgjrB4s";
-const ADMIN_EMAIL_ADDRESS = "ndtuneti@gmail.com";
+//gửi mail
+// const nodemailer = require("nodemailer");
+// const { OAuth2Client } = require("google-auth-library");
+
+// const GOOGLE_MAILER_CLIENT_ID =
+//   "1051458480695-c0bk99e282fpu8nou08p0hp2o4n4e42a.apps.googleusercontent.com";
+// const GOOGLE_MAILER_CLIENT_SECRET = "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";
+// const GOOGLE_MAILER_REFRESH_TOKEN =
+//   "1//04DnrxxL5l_MwCgYIARAAGAQSNwF-L9IrLbxQuq_EaB2ufY3EiY552qEaQ_-3os-MlZULq-2lm_xleaV5j_ORy0P7HvPqLgjrB4s";
+// const ADMIN_EMAIL_ADDRESS = "ndtuneti@gmail.com";
 
 const login = async (req, res) => {
   try {
@@ -38,7 +40,7 @@ const login = async (req, res) => {
     const accessToken = generateAccessToken(emailExist._id)
     const refreshToken = generateRefreshToken(emailExist._id)
 
-    console.log(accessToken)
+    // console.log(accessToken)
     await Users.findByIdAndUpdate(emailExist._id, { refreshToken });
 
     return res.status(201).json({
@@ -96,7 +98,6 @@ const loginAdmin = async (req, res) => {
 const register = async (req, res) => {
   try {
     const body = req.body;
-    console.log(body);
     const Schema = Joi.object({
       email: Joi.string()
         .email({
@@ -107,10 +108,9 @@ const register = async (req, res) => {
       username: Joi.string(),
       password: Joi.string()
         .regex(
-          /^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/ // MatKhau123@
+          /^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/ // Mindx123@
         )
-        // .required()
-        ,
+        .required(),
       phone: Joi.string()
         .regex(/^[0-9]{10}$/)
         .messages({
@@ -189,7 +189,7 @@ const getAllUser = async (req, res) => {
 
     const users = await Users.find({})
       .skip(pageSize * pageIndex - pageSize)
-      .limit(pageSize).populate("cart")
+      .limit(pageSize);
 
     // console.log(users)
     return res.status(200).json({
@@ -207,14 +207,13 @@ const updateUser = async (req, res) => {
     // console.log(id);
 
     const body = req.body;
-    console.log(body)
-
+    // console.log(body)
     const Schema = Joi.object({
       email: Joi.string().email({
         minDomainSegments: 2,
         tlds: { allow: ["com", "net"] },
       }),
-      userName: Joi.string(),
+      username: Joi.string(),
       password: Joi.string().regex(
         /^(?=(.*[a-z]){1,})(?=(.*[A-Z]){1,})(?=(.*[0-9]){1,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/ // Mindx123@
       ),
@@ -247,9 +246,7 @@ const updateUser = async (req, res) => {
       body.password = newPass;
     }
 
-    const Result = await userModel.findByIdAndUpdate(id,
-      body
-    , { new: true });
+    const Result = await userModel.findByIdAndUpdate(id, body, { new: true });
 
     return res.status(201).json({
       message: " Cập nhật sản phẩm thành công",
@@ -303,8 +300,10 @@ const refeshToken = async (req, res) => {
       user: userExits,
     });
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    // alert('Đã hết phiên đăng nhập')
+
+    return res.status(400).json(error.message);;
+    // throw new Error(error.message);
   }
 };
 
@@ -402,9 +401,9 @@ const updateCart = async (req, res) => {
 
       // Nếu đã có mặt hàng này trong giỏ hàng
       if (alreadyVariant) {
-        let update = { $inc: { "cart.cartDetail.$.quantity": quantity } }; // khởi tạo biến $inc
+        let update = { $inc: { "cart.cartDetail.$.quantity": quantity } }; // nếu chưa có khởi tạo biến $inc
 
-        if (action === 'changeQuantity') { // nếu bằng change quantity thì gán lại biến $set  
+        if (action === 'changeQuantity') { // nếu có r thì cập nhật, bằng change quantity thì gán lại biến $set  
           update = { $set: { "cart.cartDetail.$.quantity": quantity } }
         }
 
@@ -540,5 +539,4 @@ module.exports = {
   getUserById,
   updateCart,
   removeVariantInCart,
-  updateUser
 };

@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+// import { useToast } from "@chakra-ui/react";
 import { Button, Form, Input, Modal, Select, message } from "antd";
 import React, { useState } from "react";
 import { createApiPjc } from "../../../services";
@@ -8,7 +8,7 @@ const CreateProduct = ({products, setProducts}) => {
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [form] = Form.useForm();
-  const toast = useToast();
+  // const toast = useToast();
 
 
   const showModal = () => {
@@ -28,6 +28,7 @@ const CreateProduct = ({products, setProducts}) => {
 
   const onFinish = async (values) => {
     try {
+      console.log(values.category);
       const result = await createApiPjc().post(
         `http://localhost:8000/admin/product/${values.category}`,
         {
@@ -60,10 +61,10 @@ const CreateProduct = ({products, setProducts}) => {
   return (
     <>
       <Button type="primary" onClick={showModal} className="bg-blue">
-        Create a new product
+        Tạo mới 1 sản phẩm
       </Button>
       <Modal
-        title="Add product"
+        title="Thêm sản phẩm"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -79,6 +80,7 @@ const CreateProduct = ({products, setProducts}) => {
             type="primary"
             htmlType="submit"
             onClick={handleOk}
+            className="bg-blue"
           >
             Submit
           </Button>,
@@ -103,14 +105,14 @@ const CreateProduct = ({products, setProducts}) => {
           id="myForm"
           onFinish={onFinish}
         >
-          <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+          <Form.Item label="Tên" name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item label="Slug" name="slug" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
           <Form.Item
-            label="Category"
+            label="Danh mục"
             name="category"
             rules={[{ required: true, message: "Please select one!" }]}
           >
@@ -144,27 +146,27 @@ const CreateProduct = ({products, setProducts}) => {
               </Select.Option>
             </Select>
           </Form.Item>
-          <Form.Item label="Material" name="material">
+          <Form.Item label="Chất liệu" name="material"  rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Form" name="form">
+          <Form.Item label="Form" name="form" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Color" name="color">
+          <Form.Item label="Màu sắc" name="color"  rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Design" name="design">
+          <Form.Item label="Design" name="design"  rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Detail image" name="image">
+          <Form.Item label="Chi tiết ảnh" name="image" >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Thumbnail"
+            label="Đường dẫn ảnh"
             name="thumbnail"
             rules={[{ required: true, message: "Please fill the blank!" }]}
           >
-            <Input />
+             <Input />
           </Form.Item>
         </Form>
       </Modal>

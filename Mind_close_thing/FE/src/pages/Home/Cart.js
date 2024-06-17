@@ -22,51 +22,14 @@ export default function Cart() {
   // console.log(user)
   // console.log(user.cart.cartDetail)
 
-
-  //kt giỏ về cũ
-  // try {
-    
-
-  //   cartDetails.map(async (item) => {
-  //     // console.log(item.variant)
-      
-  //     let variant = await createApiPjc().get(
-  //       `http://localhost:8000/variant/${item.variant}`
-  //     )
-
-  //     console.log(variant.data.variant)
-  //     console.log(variant.data.variant.countInStock)
-  //     let countInStock = variant.data.variant.countInStock
-
-  //     console.log(item.quantity)
-  //     console.log(countInStock)
-
-  //     // if(item.quantity > variant.data.variant.countInStock) {
-  //     //   const response = await createApiPjc().put(
-  //     //     "http://localhost:8000/user/cart",
-  //     //     {
-  //     //       quantity: countInStock,
-  //     //     },
-         
-  //     //   );
-  //     //   console.log(response.data)
-  //     // }
-
-
-  //   })
-  // } catch (error) {
-  //   console.log(error.message)
-  // }
-  //
-
-  const transformData = (data) => {
-    return data.map((item) => {
-      return {
-        ...item,
-        key: item._id,
-      };
-    });
-  };
+  // const transformData = (data) => {
+  //   return data.map((item) => {
+  //     return {
+  //       ...item,
+  //       key: item._id,
+  //     };
+  //   });
+  // };
 
 
 
@@ -180,8 +143,9 @@ export default function Cart() {
                   </thead>
                   <tbody>
                     {cartDetails.map(cartItem => {
+                      // giá = giá - (giá * % giảm)
                       const priceAProduct =
-                        cartItem?.priceDetail?.price * ((100 - cartItem?.priceDetail?.saleRatio) / 100);
+                      cartItem?.priceDetail?.price - cartItem?.priceDetail?.price * (cartItem?.priceDetail?.saleRatio / 100);
 
                       return (
                         <tr
@@ -218,7 +182,8 @@ export default function Cart() {
                               </div>
                             </div>
                           </th>
-                          <td className="text-center py-2 text-[#ff0000] font-bold text-sm">
+                          {/* đơn giá */}
+                          <td className="text-center py-2 text-[#ff0000] font-bold text-sm"> 
                             {formatCurrencyInVnd(priceAProduct)}đ
                           </td>
                           <td className="text-center py-2">
@@ -272,15 +237,7 @@ export default function Cart() {
 
                 </div>
 
-                {/* <div className="lg:flex lg:justify-end" >
-                  <Button onClick={handlePay}
-                    type="primary"
-                    className="bg-black w-full lg:w-[300px] mt-3 !rounded-none"
-                    size="large"
-                  >
-                    Thanh toán
-                  </Button>
-                </div> */}
+              
               </>
             ) : (
               <div className="flex flex-col justify-center items-center gap-3">

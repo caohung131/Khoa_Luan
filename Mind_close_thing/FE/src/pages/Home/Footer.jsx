@@ -60,6 +60,7 @@ const Footer = () => {
               <div
                 style={{ cursor: "pointer" }}
                 className="send bg-[#646464] p-2.5 rounded-r-sm"
+                onClick={ e => alert("Tính năng đang được phát triển")}
               >
                 <i className="fa-solid fa-paper-plane text-white " />
               </div>
@@ -69,7 +70,7 @@ const Footer = () => {
             </p>
             <ul className="flex gap-3 mt-2">
               <li>
-                <a href>
+                <a href onClick={ e => alert("Tính năng đang được phát triển")}>
                   <img
                     src="https://bizweb.dktcdn.net/100/415/697/themes/902041/assets/facebook.svg?1692958575148"
                     alt=""
@@ -77,7 +78,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href>
+                <a href onClick={ e => alert("Tính năng đang được phát triển")}>
                   <img
                     src="https://bizweb.dktcdn.net/100/415/697/themes/902041/assets/instagram.svg?1692958575148"
                     alt=""
@@ -85,7 +86,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href>
+                <a href onClick={ e => alert("Tính năng đang được phát triển")}>
                   <img
                     src="https://bizweb.dktcdn.net/100/415/697/themes/902041/assets/tiktok.svg?1692958575148"
                     alt=""
@@ -93,7 +94,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href>
+                <a href onClick={ e => alert("Tính năng đang được phát triển")}>
                   <img
                     src="	https://bizweb.dktcdn.net/100/415/697/themes/902041/assets/shopeeico.png?1692958575148"
                     width="40px"
@@ -103,7 +104,7 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href>
+                <a href onClick={ e => alert("Tính năng đang được phát triển")}>
                   <img
                     src="https://bizweb.dktcdn.net/100/415/697/themes/902041/assets/lazadaico.png?1692958575148"
                     width="40px"
@@ -115,25 +116,28 @@ const Footer = () => {
             </ul>
           </div>
           <ul className="text-[#999999] mt-4 text-sm  flex flex-col gap-3 lg:text-base lg:ml-20 lg:mt-0">
-            <li>
-              <a href>Trang chủ</a>
+            <li className="cursor-pointer">
+              <Link to="/">Trang chủ</Link>
             </li>
-            <li>
-              <a href>Tất cả sản phẩm</a>
+            <li className="cursor-pointer">
+              <Link to="/shop">Tất cả sản phẩm</Link>
             </li>
-            <li>
-              <a href>Chính sách đổi trả</a>
+            <li className="cursor-pointer">
+              <Link to="/doitra">Chính sách đổi trả</Link>
             </li>
-            <li>
-              <a href>Bảng size</a>
+            <li className="cursor-pointer">
+              <Link to="/bangsize">Bảng size</Link>
             </li>
-            <li>
-              <a href>Kiểm tra đơn hàng</a>
+            <li className="cursor-pointer">
+              <Link to="/order-user">Kiểm tra đơn hàng</Link>
+            </li>     
+            <li className="cursor-pointer">
+              <Link to="/">Hệ thống của hàng</Link>
             </li>
-            <li>
-              <a href>Hệ thống của hàng</a>
-            </li>
+           
           </ul>
+
+       
         </div>
       </footer>
     </>

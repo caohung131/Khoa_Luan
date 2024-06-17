@@ -10,9 +10,11 @@ const onClick = ({ key }) => {
 
   localStorage.removeItem("user/admin");
   localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
   localStorage.removeItem("id");
   window.location.assign("http://localhost:3000")
 
+  window.location.reload();
   // handleClick();
 };
 

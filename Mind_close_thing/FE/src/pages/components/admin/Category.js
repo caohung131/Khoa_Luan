@@ -58,7 +58,7 @@ const Category = () => {
 
   const columns = [
     {
-      title: "Name",
+      title: "Tên",
       dataIndex: "name",
       key: "name",
     //   render: (_, record) => <a>{record.orderedBy.email}</a>,
@@ -70,19 +70,19 @@ const Category = () => {
     //   render: (text) => <a>{text === false ? "Un Paid" : "Paid"}</a>,
     },
     {
-      title: "Created at",
+      title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
     }
     ,
     {
-        title: "Update at",
+        title: "Thời gian sửa",
         dataIndex: "updatedAt",
         key: "updatedAt",
     }
     ,
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
@@ -103,7 +103,7 @@ const Category = () => {
             }}
           >
 
-            <Button className="bg-red color-white">Delete</Button>
+            <Button className="bg-red color-white">Xóa</Button>
           </Popconfirm>
 
          

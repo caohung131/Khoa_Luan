@@ -3,8 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { DataContext } from "../../useContextData";
 
-import { Pagination } from 'antd';
-
+import { Breadcrumb, Pagination } from "antd";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
@@ -15,6 +14,8 @@ const Product = () => {
 
   // console.log(dataProduct?.productData?.products)
 
+
+  //nếu đã có data search thì gán data search
   useEffect(() => {
     if (dataSearch.length == 0) {
       setProducts(productData.products);
@@ -47,55 +48,56 @@ const Product = () => {
 
   return (
     <>
+   
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 container">
-        {products?.slice((current - 1) * pageSize, current * pageSize)
-        // && //có product mới chạy
-        //   products
-        //     .filter(
-        //       (data) =>
-        //         !selectedCategory || data?.category.name === selectedCategory //trả về category null hoặc trả về ten theo category
-        //     )
-            ?.map((data) => (
-              <div
-                className="w-[] p-2.5 m-2.5 text-center border border-[#ddd] rounded-lg"
-                key={data.id}
-              >
-                <Link to={`/detail/${data._id}`} className="with-anh" >
-                  <img src={data.thumbnail} alt="#"  className="with-anh"/>
-                </Link>
-                <Link to={`/detail/${data._id}`}>
-                  <p>{data.name}</p>
-                </Link>
-                <p className="name">{data.category.name}</p>
-                <div className="price-math">
-                  <h4>
-                    {(data.priceDetail &&
-                      formatNumber(
-                        data.priceDetail.price *
-                          ((100 - data.priceDetail.saleRatio) / 100)
-                      )) ||
-                      "0"}
-                    đ
-                  </h4>
-                  {data.priceDetail && (
-                    <del className="delete">{data.priceDetail.price}ss</del>
-                  )}
-                </div>
+        {products
+          ?.slice((current - 1) * pageSize, current * pageSize)
+          // && //có product mới chạy
+          //   products
+          //     .filter(
+          //       (data) =>
+          //         !selectedCategory || data?.category.name === selectedCategory //trả về category null hoặc trả về ten theo category
+          //     )
+          ?.map((data) => (
+            <div
+              className="w-[] p-2.5 m-2.5 text-center border border-[#ddd] rounded-lg"
+              key={data.id}
+            >
+              <Link to={`/detail/${data._id}`} className="with-anh">
+                <img src={data.thumbnail} alt="#" className="with-anh" />
+              </Link>
+              <Link to={`/detail/${data._id}`}>
+                <p>{data.name}</p>
+              </Link>
+              <p className="name">{data.category.name}</p>
+              <div className="price-math">
+                <h4>
+                  {(data.priceDetail &&
+                    formatNumber(
+                      data.priceDetail.price *
+                        ((100 - data.priceDetail.saleRatio) / 100)
+                    )) ||
+                    "0"}
+                  đ
+                </h4>
+                {data.priceDetail && (
+                  <del className="delete">{data.priceDetail.price}đ</del>
+                )}
               </div>
-
-              
-            ))}
-            
-
-      <Pagination
-        defaultCurrent={1}
-        current={current}
-        total={products?.length}
-        onChange={(value) => setCurrent(value)}
-      />
-
+            </div>
+          ))}
       </div>
-
+      <br />
+      <div className="container" style={{display:"flex", justifyContent:"end"} }>
+        <Pagination
+          defaultCurrent={1}
+          current={current}
+          total={products?.length}
+          onChange={(value) => setCurrent(value)}
+        />
+        </div>
+        <br/>
     </>
   );
 };

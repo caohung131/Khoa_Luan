@@ -20,8 +20,8 @@
 
 
 const cloudinary = require('cloudinary').v2;
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary'); // lấy ảnh và lưu ảnh
+const multer = require('multer'); // lưu file và upload file
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,

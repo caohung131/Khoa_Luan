@@ -24,7 +24,7 @@ const createOrder = async (req, res) => {
   const validate = orderSchema.validate(input); // validate các dữ liệu nhập vào
 
 
-  
+
 
   if (validate.error) {
     return res.status(400).json({ error: validate.error.message });
@@ -44,7 +44,7 @@ const createOrder = async (req, res) => {
       const variantId = userCart.cart.cartDetail[i].variant; // tìm id variant giỏ hàng detail
       const variant = await variantModel.findById(variantId);  // tìm trong bảng variant từ id đó
 
-    console.log(userCart.cart.cartDetail); 
+      console.log(userCart.cart.cartDetail);
 
 
       if ( // cart trong kho >= số lượng đặt
@@ -96,8 +96,8 @@ const getOrderById = async (req, res) => {
   try {
     const orderId = req.params.id;
     const order = await orderModel.findById(orderId)
-    .populate("orderDetail")
-    .populate('orderedBy')
+      .populate("orderDetail")
+      .populate('orderedBy')
 
     return res.status(200).json({ order });
   } catch (error) {
@@ -132,6 +132,16 @@ const updateStatusOrder = async (req, res) => {
 
 const deleteOrder = async (req, res) => {
   // check status nếu bằng = mới cho delete và kiểm tra hoàn tiền
+  try {
+    const orderId = req.params.id;
+
+    // console.log(orderId);
+    const variantDeleted = await orderModel.findByIdAndDelete(orderId);
+
+    return res.status(200).json({ message: "Xóa Order thành công", variantDeleted });
+  } catch (error) {
+    return res.status(400).json("Xóa Order thất bại");
+  }
 };
 
 const getPagingOrder = async (req, res) => {
@@ -215,4 +225,5 @@ module.exports = {
   getOrderById,
   getPagingOrder,
   createOrderPaymentPaypal,
+  deleteOrder
 };

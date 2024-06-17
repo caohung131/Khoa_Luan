@@ -8,33 +8,68 @@ const ReturnPolicy = () => {
   return (
     <>
     <Header/>
-    <div className="return-policy-container">
-      <h1>Chính Sách Đổi Trả</h1>
-      <p>Chúng tôi cam kết mang đến sự hài lòng cho khách hàng với chính sách đổi trả linh hoạt và thuận tiện. Nếu bạn không hài lòng với sản phẩm đã mua, bạn có thể đổi trả theo các điều kiện dưới đây:</p>
-      
-      <h2>Điều Kiện Đổi Trả</h2>
-      <ul>
-        <li>Sản phẩm phải được đổi trả trong vòng 30 ngày kể từ ngày nhận hàng.</li>
-        <li>Sản phẩm phải còn nguyên vẹn, chưa qua sử dụng và còn nguyên bao bì.</li>
-        <li>Hóa đơn mua hàng hoặc bằng chứng mua hàng phải được xuất trình khi đổi trả.</li>
-      </ul>
-      
-      <h2>Quy Trình Đổi Trả</h2>
-      <ol>
-        <li>Liên hệ với dịch vụ khách hàng của chúng tôi qua email hoặc số điện thoại để yêu cầu đổi trả.</li>
-        <li>Gửi sản phẩm về địa chỉ của chúng tôi cùng với hóa đơn mua hàng hoặc bằng chứng mua hàng.</li>
-        <li>Chúng tôi sẽ kiểm tra sản phẩm và tiến hành đổi trả hoặc hoàn tiền trong vòng 7 ngày làm việc kể từ khi nhận được sản phẩm.</li>
-      </ol>
-      
-      <h2>Phí Đổi Trả</h2>
-      <p>Phí vận chuyển cho việc đổi trả sẽ do khách hàng chi trả, trừ khi sản phẩm bị lỗi hoặc không đúng với đơn đặt hàng.</p>
-      
-      <h2>Liên Hệ</h2>
-      <p>Nếu bạn có bất kỳ câu hỏi nào về chính sách đổi trả của chúng tôi, vui lòng liên hệ:</p>
-      <ul>
-        <li>Email: Mindclosething@gmail.com</li>
-        <li>Điện thoại: 0123-456-789</li>
-      </ul>
+    <div className="container">
+      <br/>
+      <br/>
+          <div style={{ fontFamily: 'Arial, sans-serif', lineHeight: '1.5' }}>
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '10px' }}>
+          1. CHÍNH SÁCH ĐỔI SẢN PHẨM
+        </div>
+
+        <br/>
+        <div style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '10px' }}>a. Đổi size</div>
+        <ul style={{ marginBottom: '10px', paddingLeft: '20px' }}>
+          <li style={{ marginBottom: '5px' }}>
+            Áp dụng 01 lần đổi /1 đơn hàng với các đơn hàng mua online và các đơn hàng mua tại cửa hàng.
+          </li>
+          <li style={{ marginBottom: '5px' }}>
+            Sản phẩm đổi trong thời gian 3 ngày kể từ ngày mua hàng trên hoá đơn (đối với khách mua hàng trực tiếp tại cửa hàng), 3 ngày kể từ ngày nhận hàng (Đối với khách mua online)
+          </li>
+          <li style={{ marginBottom: '5px' }}>
+            Sản phẩm còn mới nguyên tem, tags và mang theo hoá đơn mua hàng, sản phẩm chưa giặt và không dơ bẩn, hư hỏng bởi những tác nhân bên ngoài cửa hàng sau khi mua hàng.
+          </li>
+          <li style={{ marginBottom: '5px' }}>Không áp dụng đối với các sản phẩm là phụ kiện</li>
+        </ul>
+
+        <br/>
+        <div style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '10px' }}>b. Đổi sản phẩm lỗi</div>
+        <div style={{ marginBottom: '10px', paddingLeft: '20px' }}>
+          <div style={{ marginBottom: '5px' }}>Điều kiện áp dụng</div>
+          <ul style={{ marginBottom: '10px', paddingLeft: '20px' }}>
+            <li style={{ marginBottom: '5px' }}>Sản phẩm lỗi kỹ thuật: Sản phẩm rách, bung keo, …</li>
+          </ul>
+          <div style={{ marginBottom: '5px' }}>Trường hợp không được giải quyết</div>
+          <ul style={{ marginBottom: '10px', paddingLeft: '20px' }}>
+            <li style={{ marginBottom: '5px' }}>Sản phẩm đã qua sử dụng</li>
+          </ul>
+          <p style={{ marginBottom: '5px' }}>
+            Đối với sản phẩm lỗi kỹ thuật cần phản hồi đến Mind Clothing trong vòng 3 ngày, kể từ ngày mua hàng trên hoá đơn đối với khách mua trực tiếp tại cửa hàng, 3 ngày kể từ ngày nhận hàng đối với khách mua online.
+          </p>
+        </div>
+      </div>
+
+      <br/>
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '10px' }}>2. PHƯƠNG THỨC ĐỔI SẢN PHẨM</div>
+        <ul style={{ marginBottom: '10px', paddingLeft: '20px' }}>
+          <li style={{ marginBottom: '5px' }}>Hàng mua trực tiếp tại cửa hàng: Đổi trả trực tiếp tại cửa hàng mua hàng</li>
+          <li style={{ marginBottom: '5px' }}>Hàng mua online (thông qua website, Shopee, Lazada): liên hệ fanpage Mind Clothing   để được hướng dẫn đổi trả</li>
+        </ul>
+      </div>
+
+      <br/>
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '10px' }}>3. CHI PHÍ ĐỔI HÀNG</div>
+        <ul style={{ marginBottom: '10px', paddingLeft: '20px' }}>
+          <li style={{ marginBottom: '5px' }}>Miễn phí đổi hàng cho khách mua ở Mind Clothing trong trường hợp bị lỗi từ nhà sản xuất, giao nhầm hàng, bị hư hỏng trong quá trình vận chuyển hàng.</li>
+          <li style={{ marginBottom: '5px' }}>Trong trường hợp không vừa size hay khách hàng không ưng sản phẩm không muốn nhận hàng phiền khách hàng trả ship hoàn đơn hàng về.</li>
+        </ul>
+      </div>
+    </div>
+
+    <br/>
+
     </div>
     <Footer/>
     </>

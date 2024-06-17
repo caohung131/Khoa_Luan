@@ -6,6 +6,7 @@ const {
   createOrderPaymentPaypal,
   getAllOrder,
   getPagingOrder,
+  deleteOrder,
 } = require("../controllers/order/index");
 const { authentication } = require("../middlewares/authenticator");
 const { authorization } = require("../middlewares/authorization");
@@ -18,6 +19,7 @@ router.post("/:id", authentication, createOrder);
 // thêm router deleteOrder (check đk status = 0)
 router.get("/all", getAllOrder);
 router.get("/:id", getOrderById);
+router.delete("/:id", deleteOrder);
 
 
 // thêm router listOrderById (admin)

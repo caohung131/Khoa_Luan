@@ -9,10 +9,7 @@ import { DataContext } from "../../../useContextData";
 const UserAdmin = () => {
   
   const { userData, setUserData } = useContext(DataContext)
-
-
   // console.log(userData)
-
 
   const [user, setUser] = useState([]);
 
@@ -22,7 +19,7 @@ const UserAdmin = () => {
     setUser(userData?.user)
   }, [userData])
   
-  console.log(user)
+  // console.log(user)
   const toast = useToast();
 
 
@@ -30,12 +27,8 @@ const UserAdmin = () => {
     try {
       // console.log(userData)
       await createApiPjc().delete(`http://localhost:8000/user/${id}`)
-      // toast({
-      //   status: "success",
-      //   title: "Xoá người dùng thành công",
-      //   position: "top",
-      // });
       setUser(user.filter((item) => item._id != id));
+      alert("Xóa người dùng thành công")
     } catch (error) {
       toast({
         status: "error",
@@ -51,39 +44,39 @@ const UserAdmin = () => {
       key: "email",
     },
     {
-      title: "Address",
+      title: "Địa chỉ",
       render: (text) => <p>{text?.shippingAddress?.address}</p>,
     },
     {
-      title: "district",
+      title: "Huyện",
       render: (text) => <p>{text?.shippingAddress?.district}</p>,
     }, 
     {
-      title: "city",
+      title: "Thành phố",
       render: (text) => <p>{text?.shippingAddress?.city}</p>,
     },
     {
-      title: "User Name",
+      title: "Tên",
       dataIndex: "username",
       key: "username",
     },
     {
-      title: "Role",
+      title: "Quyền",
       dataIndex: "role",
       key: "role",
     },
     {
-      title: "Password",
+      title: "Mật khẩu",
       dataIndex: "password",
       key: "password",
     },
     {
-      title: "Birthday",
+      title: "Ngày sinh",
       dataIndex: "birth_year",
       key: "birth_year",
     },
     {
-      title: "Phone Number",
+      title: "Số điện thoại",
       dataIndex: "phone",
       key: "phone",
     },
@@ -91,7 +84,7 @@ const UserAdmin = () => {
 
     
     {
-      title: "Action",
+      title: "Hành động",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
@@ -110,7 +103,7 @@ const UserAdmin = () => {
               deleteUser(record._id);
             }}
           >
-            <Button className="bg-red color-white">Delete</Button>
+            <Button className="bg-red color-white">Xóa</Button>
           </Popconfirm>
         </Space>
       ),

@@ -132,22 +132,27 @@ const updateVariant = async (req, res) => {
 
     if (priceDetail) {
       // Kiểm tra variant có tồn tại trong đơn hàng hay k?
-      const variantInOrder = await orderModel.find({
-        orderDetail: {
-          $elemMatch: {
-            variant: variantId,
-          },
-        },
-        status: { $in: ["0", "1"] },
-      });
-      const isVariantInOrder = variantInOrder.length != 0 ? true : false;
-      if (isVariantInOrder) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "không thể thay đổi vì có sản phẩm đang tồn tại trong đơn hàng",
-        });
-      }
+      // const variantInOrder = await orderModel.find({
+      //   orderDetail: {
+      //     $elemMatch: {
+      //       variant: variantId,
+      //     },
+      //   },
+      //   status: { $in: ["0", "1"] },
+      // });
+
+      // console.log(variantInOrder);
+
+      //nếu variant này đã được đặt hàng k cho sứa
+      // const isVariantInOrder = variantInOrder.length != 0 ? true : false;
+      // if (isVariantInOrder) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message:
+      //       "không thể thay đổi vì có sản phẩm đang tồn tại trong đơn hàng",
+      //   });
+      // }
+      
       if (priceDetail?.saleRatio) {
         priceDetail.priceAfterSale =
           priceDetail.price * (1 - priceDetail.saleRatio / 100);
@@ -168,10 +173,11 @@ const updateVariant = async (req, res) => {
 };
 
 const deleteVariant = async (req, res) => {
-  const variantId = req.params.id;
-  const variant = await variantModel.findById(variantId);
-  const product = await productModel.findById(variant.productId);
+
   try {
+    const variantId = req.params.id;
+    const variant = await variantModel.findById(variantId);
+    const product = await productModel.findById(variant.productId);
     // check variant có trong order không
     const variantInOrder = await orderModel.find({
       orderDetail: {

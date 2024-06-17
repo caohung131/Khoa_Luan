@@ -7,7 +7,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import { DataContext } from "../../useContextData";
-import { Pagination } from "antd";
+import { Breadcrumb, Pagination } from "antd";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -42,8 +42,8 @@ const Shop = () => {
   // }, []);
 
   // console.log(selectedCategory)
-  console.log(categoryData)
-  console.log(categories)
+  // console.log(categoryData)
+  // console.log(categories)
   
 
 
@@ -63,9 +63,14 @@ const Shop = () => {
   return (
     <>
       <Header />
+
+     
       <section className="shop-content">
         <div className="sidebar">
-          <h1>Mind Clothing Store</h1>
+          <h1><Link to="/">Mind Clothing Store</Link></h1>
+          <li>
+            <Link onClick={e => window.location.reload()}>Tất cả sản phẩm</Link>
+          </li>
           {categories &&
             categories.map((category) => (
               <div
@@ -77,6 +82,8 @@ const Shop = () => {
               </div>
             ))}
         </div>
+
+        
         <div className="product">
           {products &&  //có product mới chạy
             products.filter((data) =>
@@ -112,7 +119,7 @@ const Shop = () => {
             ))}
              
 
-             <div className="pagination-all">
+             <div className="pagination-all "  style={{display:"flex", justifyContent:"end"} }> 
         <Pagination
         defaultCurrent={1}
         current={current}

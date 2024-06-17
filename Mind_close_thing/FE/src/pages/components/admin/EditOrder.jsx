@@ -10,7 +10,7 @@ import { DataContext } from "../../../useContextData";
 // import { findById } from "../../../../../BE/models/Variant";
 // import editOrder from './editOrder';
 
-const EditOrder = (props) => {
+const EditOrder = ({id, orders, setOrders}) => {
   const [open, setOpen] = useState(false);
   const [orderItem, setOderItem] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -20,14 +20,15 @@ const EditOrder = (props) => {
   // const {orderData, setOrderData} = useContext(DataContext)
   // console.log(orderData.orders);
   // console.log(props)
+
   
 
-  useEffect(() => {
-    // setOrderData(props.value);
-    props.setOrders([...props.value])
-    // console.log('1')
+  // useEffect(() => {
+  //   // setOrderData(props.value);
+  //   setOrders([...orders])
+  //   // console.log('1')
 
-  },[])
+  // },[])
 
   useEffect(() => {
     getFieldOrder();
@@ -38,7 +39,7 @@ const EditOrder = (props) => {
  
   const getFieldOrder = async () => {
     const order = await createApiPjc().get(
-      `http://localhost:8000/order/${props.id}`
+      `http://localhost:8000/order/${id}`
     );
 
     // console.log(order.data.order);
@@ -46,7 +47,7 @@ const EditOrder = (props) => {
 
     // console.log(name)
     // console.log(order.data.order);
-    form.setFieldValue("customer", order.data.order.orderedBy.email);
+    form.setFieldValue("customer", order.data.order?.orderedBy?.email);
     form.setFieldValue("status", order.data.order.stutus);
     form.setFieldValue("pay", order.data.order.paymentMethod);
     form.setFieldValue("form", order.data.order.stutus);
@@ -63,12 +64,12 @@ const EditOrder = (props) => {
 
     try {
       const result = await createApiPjc().get(
-        `http://localhost:8000/order/${props.id}`
+        `http://localhost:8000/order/${id}`
       );
 
       // console.log(result.data.order)
       const order = result.data.order;
-      console.log(order)
+      // console.log(order)
          setOderItem(order);
     } catch (error) {
       return error.message;
@@ -93,7 +94,7 @@ const EditOrder = (props) => {
     // return 0;
     try {
       const result = await createApiPjc().put(
-        `http://localhost:8000/order/update-status-order/${props.id}`,
+        `http://localhost:8000/order/update-status-order/${id}`,
         {
           ...orderItem,
           status: values.status,
@@ -101,12 +102,6 @@ const EditOrder = (props) => {
       );
 
       console.log(result);
-      toast({
-        status: "success",
-        title: "Tạo sản phẩm thành công",
-        position: "top",
-      });
-
       alert("Tạo sản phẩm thành công");
 
       setOpen(false);
@@ -131,11 +126,11 @@ const EditOrder = (props) => {
 
   return (
     <>
-      <Button type="default" onClick={showModal} color="white">
-        Edit Order
+      <Button type="default" onClick={showModal} color="white" className="bg-blue color-white">
+        Thay đổi trạng thái 
       </Button>
       <Modal
-        title="Add variant"
+        title="Sửa trạng thái"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -143,16 +138,17 @@ const EditOrder = (props) => {
         width={700}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
           <Button
             key="submit"
             form="myForm"
-            type="dashed"
+            type="primary"
             htmlType="submit"
             onClick={handleOk}
+            className="bg-blue"
           >
-            Submit
+            Xác nhận
           </Button>,
         ]}
       >
@@ -175,7 +171,7 @@ const EditOrder = (props) => {
         >
 
           <Form.Item
-            label="Customer"
+            label="Khách hàng"
             name="customer"
             // rules={[{ required: true }]}
           >
@@ -187,7 +183,7 @@ const EditOrder = (props) => {
           </Form.Item>
 
           <Form.Item
-            label="Status"
+            label="Trạng thái"
             name="status"
             rules={[{ required: true, message: "Please select one!" }]}
             // value={orderItem?.status}

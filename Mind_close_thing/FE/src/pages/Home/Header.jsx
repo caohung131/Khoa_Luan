@@ -158,7 +158,7 @@ const Header = () => {
 
   //search
   const handleSearch = () => {
-    console.log(document.querySelector("#search_user").value);
+    // console.log(document.querySelector("#search_user").value);
     const searchEle = document.querySelector("#search_user");
     const newData = productData?.products.filter((item) => {
       return item?.name.toUpperCase().includes(searchEle?.value.toUpperCase());
@@ -308,10 +308,11 @@ const Header = () => {
               </Link>
             </li>
             <li className="cursor-pointer">
-              <a href="bangsize">BẢNG SIZE</a>
+              <Link to="/bangsize">BẢNG SIZE</Link>
+
             </li>
             <li className="cursor-pointer">
-              <a href="vitri">HỆ THỐNG CỦA HÀNG</a>
+              <Link to="/vitri">HỆ THỐNG CỦA HÀNG</Link>
             </li>
           </ul>
           <Divider />
@@ -324,7 +325,7 @@ const Header = () => {
               <Link to="/lienhe">Liên hệ</Link>
             </li>
             <li>
-              <Link to="/order-user">Order user</Link>
+              <Link to="/order-user">Kiểm tra đơn hàng</Link>
             </li>
 
             {/* 

@@ -24,6 +24,7 @@ export default function SimilarProducts() {
     const accessToken = JSON.parse(localStorage.getItem("user")).accessToken;
     const addToCart = async () => {
       const variantId = productItem.variants[0]._id
+
       try {
         const response = await axios.put(
           "http://localhost:8000/user/cart",
@@ -57,7 +58,7 @@ export default function SimilarProducts() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/product")
+      .get("http://localhost:8000/product") // get all products
       .then((response) => setProductData(response.data.products))
       .catch((error) => console.error("Error:", error));
   }, []);
@@ -83,6 +84,7 @@ export default function SimilarProducts() {
   };
 
   const product = productData.map((item) => (
+    // console.log(item)
     <Product
       name={item?.name}
       url={item?.thumbnail}

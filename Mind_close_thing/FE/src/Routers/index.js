@@ -13,7 +13,7 @@ import ReturnPolicy from "../pages/Home/DoiTra";
 import StoreLocation from "../pages/Home/StoreLocation";
 import Contact from "../pages/Home/Contact";
 import Bangsize from "../pages/Home/BangSize";
-
+import ImageUpload from "../pages/Home/UploadFile2";
 
 const Routers = () => {
 
@@ -66,6 +66,7 @@ const Routers = () => {
         <Route path="/vitri" element={< StoreLocation />} />
         <Route path="/lienhe" element={< Contact />} />
         <Route path="/bangsize" element={< Bangsize />} />
+        <Route path="/upload" element={< ImageUpload />} />
         {/* <Route path="/admin" element={<Admin />} />  */}
       </Routes>
     </>

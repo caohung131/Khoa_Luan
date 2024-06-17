@@ -78,10 +78,10 @@ const EditUser = (id) => {
   return (
     <>
       <Button type="primary" onClick={showModal} className="bg-blue">
-        Edit
+        Sửa
       </Button>
       <Modal
-        title="Edit user"
+        title="Sửa người dùng"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -89,7 +89,7 @@ const EditUser = (id) => {
         width={700}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
           <Button
             key="submit"
@@ -99,7 +99,7 @@ const EditUser = (id) => {
             onClick={handleOk}
             className='bg-blue'
           >
-            OK
+            Xác nhận
           </Button>,
         ]}
       >
@@ -124,19 +124,19 @@ const EditUser = (id) => {
       id="myForm"
       onFinish={onFinish}
     >
-      <Form.Item label="Username" name="username">
+      <Form.Item label="Tên" name="username">
         <Input />
       </Form.Item>
       <Form.Item label="Email" name="email" >
         <Input/>
       </Form.Item>
-      <Form.Item label="Role" name="role" >
+      <Form.Item label="Quyền" name="role" >
         <Select>
           <Select.Option value="65465abf81225ec455f35aba">Customer</Select.Option>
           <Select.Option value="65465ae281225ec455f35abc">Admin</Select.Option>
         </Select>
       </Form.Item>
-      <Form.Item label="Phone Number" name="phone" >
+      <Form.Item label="Số điện thoại" name="phone" >
         <Input/>
       </Form.Item>
     </Form>

@@ -126,7 +126,11 @@ const getCategoryId = async (req, res) => {
 const createProduct = async (req, res) => {
   
   try {
-    // console.log(req.file.path)
+    
+    // console.log(req.file)
+
+    const result =  axios.get('http://localhost:8000/product/upload/anh');
+    console.log(result); 
     const categoryId = req.params.id;
     // console.log(categoryId);
     const category = await categoryModel.findById(categoryId);
@@ -312,11 +316,13 @@ const updatePriceDetailProduct = async (productId) => {
 };
 
 // upload file
-const UploadImagesProduct = ( (req, res) => {
+const UploadImagesProduct = async (req, res) => {
   console.log(req.file)
-  console.log(req.files)
-  return res.json("OK")
-})
+  // console.log(req.file.path)
+  // console.log(req.files)
+  console.log('first')
+  // return res.json("OK")
+}
 
 
 module.exports = {

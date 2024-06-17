@@ -44,18 +44,23 @@ const addInterceptorResponse = (instance) => {
 
 //api gán access token vào Api
 const addInterceptorRequest = (instance) => {
-  instance.interceptors.request.use(
-    async (config) => {
-      const accessToken = localStorage.getItem("accessToken");
-      if (accessToken) {
-        config.headers["Authorization"] = `Bearer ${accessToken}`;
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
+  try {
+    instance.interceptors.request.use(
+      async (config) => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+          config.headers["Authorization"] = `Bearer ${accessToken}`;
+        }
+        return config;
+      },
+      // (error) => {
+      //   return Promise.reject(error);
+
+      // }
+    );
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 

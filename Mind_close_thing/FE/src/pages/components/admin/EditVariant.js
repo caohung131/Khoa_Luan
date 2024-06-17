@@ -40,9 +40,9 @@ const EditVariant = (id) => {
       const variant = await createApiPjc().
         get(`http://localhost:8000/variant/${id.id}`)
 
-      console.log(variant);
+      // console.log(variant);
 
-      console.log(variant);
+      // console.log(variant);
       form.setFieldValue("name", variant.data.variant.name);
       form.setFieldValue("image", variant.data.variant.image);
       form.setFieldValue("price", variant.data.variant.priceDetail.price);
@@ -58,10 +58,10 @@ const EditVariant = (id) => {
     }
   };
   const onFinish = async (values) => {
-    console.log(values);
+    // console.log(values);
     try {
       const result = await createApiPjc().put(
-        `http://localhost:8000/admin/variant/${id.id}`,
+        `http://localhost:8000/variant/${id.id}`,
         {
           name: values.name,
           image: values.image,
@@ -73,16 +73,15 @@ const EditVariant = (id) => {
           size: values.size,
           countInStock: values.countInStock,
         }
-      );
+      ).then((response) => alert(response.data.message))
 
       window.location.reload();
 
 
-      alert("Cập nhật variant thành công")
-
     } catch (error) {
       console.log(error);
-      alert("Cập nhật sản phẩm thất bại")
+      // alert(error.response);
+      alert("Cập nhật sản phẩm thất bại") 
     }
   };
 
@@ -93,10 +92,10 @@ const EditVariant = (id) => {
   return (
     <>
       <Button type="primary" onClick={showModal} className="bg-blue">
-        Edit
+        Sửa
       </Button>
       <Modal
-        title="Add variant"
+        title="Sửa variant"
         open={open}
         onOk={handleOk}
         confirmLoading={confirmLoading}
@@ -104,7 +103,7 @@ const EditVariant = (id) => {
         width={700}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            Hủy
           </Button>,
           <Button
             key="submit"
@@ -114,7 +113,7 @@ const EditVariant = (id) => {
             onClick={handleOk}
             className="bg-blue"
           >
-            Submit
+            Xác nhận
           </Button>,
         ]}
       >
@@ -138,25 +137,25 @@ const EditVariant = (id) => {
           id="myForm"
           onFinish={onFinish}
         >
-          <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+          <Form.Item label="Tên" name="name" rules={[{ required: true }]}>
             <Input className="with-100" />
           </Form.Item>
-          <Form.Item label="Image" name="image" rules={[{ required: true }]}>
+          <Form.Item label="Ảnh" name="image" rules={[{ required: true }]}>
             <Input className="with-100" />
           </Form.Item>
-          <Form.Item label="Price" name="price">
+          <Form.Item label="Giá" name="price" rules={[{ required: true }]}>
             <InputNumber className="with-100" />
           </Form.Item>
-          <Form.Item label="Sale Ratio" name="saleRatio">
+          <Form.Item label="Phần trăm giảm" name="saleRatio">
             <InputNumber className="with-100" />
           </Form.Item>
-          <Form.Item label="Color" name="color">
+          <Form.Item label="Màu sắc" name="color" rules={[{ required: true }]}>
             <Input className="with-100" />
           </Form.Item>
-          <Form.Item label="Size" name="size">
+          <Form.Item label="Size" name="size" rules={[{ required: true }]}>
             <Input className="with-100" />
           </Form.Item>
-          <Form.Item label="Count In Stock" name="countInStock">
+          <Form.Item label="Số lượng" name="countInStock" rules={[{ required: true }]}>
             <InputNumber className="with-100" />
           </Form.Item>
         </Form>

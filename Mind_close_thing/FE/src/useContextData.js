@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { createApiPjc } from './services';
+// import { createApiPjc } from './services';
 import axios from 'axios';
 
 const DataContext = createContext();
@@ -20,7 +20,7 @@ const DataProvider = ({ children }) => {
     //         .catch((error) => console.error("Error:", error));
     // }, []);
 
-    console.log(userData);
+    // console.log(userData);
 
     useEffect(() => {
         fetch("http://localhost:8000/user")
